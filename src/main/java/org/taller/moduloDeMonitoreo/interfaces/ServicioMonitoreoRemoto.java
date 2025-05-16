@@ -1,4 +1,4 @@
-package monitoreo.interfaces;
+package org.taller.moduloDeMonitoreo.interfaces;
 
 public interface ServicioMonitoreoRemoto {
     void notificarPago();

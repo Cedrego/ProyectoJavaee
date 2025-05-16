@@ -1,9 +1,9 @@
-package monitoreo.infraestructura.configuracion;
+package org.taller.moduloDeMonitoreo.infraestructura.configuracion;
 
-import monitoreo.aplicacion.ServicioMonitoreoImpl;
-import monitoreo.dominio.ServicioMonitoreo;
-import monitoreo.repositorio.RepositorioEventos;
-import monitoreo.infraestructura.persistencia.RepositorioEventosImpl;
+import org.taller.moduloDeMonitoreo.aplicacion.ServicioMonitoreoImpl;
+import org.taller.moduloDeMonitoreo.dominio.ServicioMonitoreo;
+import org.taller.moduloDeMonitoreo.repositorio.RepositorioEventos;
+import org.taller.moduloDeMonitoreo.infraestructura.persistencia.RepositorioEventosImpl;
 
 public class ConfiguracionMonitoreo {
 

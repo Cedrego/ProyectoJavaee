@@ -1,7 +1,7 @@
-package monitoreo.aplicacion;
+package org.taller.moduloDeMonitoreo.aplicacion;
 
-import monitoreo.dominio.ServicioMonitoreo;
-import monitoreo.repositorio.RepositorioEventos;
+import org.taller.moduloDeMonitoreo.dominio.ServicioMonitoreo;
+import org.taller.moduloDeMonitoreo.repositorio.RepositorioEventos;
 
 public class ServicioMonitoreoImpl implements ServicioMonitoreo {
 
