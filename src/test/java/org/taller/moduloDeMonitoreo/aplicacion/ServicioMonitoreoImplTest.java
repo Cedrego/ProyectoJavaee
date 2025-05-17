@@ -2,7 +2,6 @@ package org.taller.moduloDeMonitoreo.aplicacion;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.taller.moduloDeMonitoreo.repositorio.RepositorioEventos;
 
 import static org.mockito.Mockito.*;
