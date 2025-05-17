@@ -1,6 +1,6 @@
-package monitoreo.infraestructura.persistencia;
+package org.taller.moduloDeMonitoreo.infraestructura.persistencia;
 
-import monitoreo.repositorio.RepositorioEventos;
+import org.taller.moduloDeMonitoreo.repositorio.RepositorioEventos;
 
 public class RepositorioEventosImpl implements RepositorioEventos {
 

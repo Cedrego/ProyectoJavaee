@@ -1,4 +1,4 @@
-package main.java.org.taller.moduloDeTransferencia.dominio;
+package org.taller.moduloDeTransferencia.dominio;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package monitoreo.dominio;
+package org.taller.moduloDeMonitoreo.dominio;
 
 public interface ServicioMonitoreo {
     void notificarPago();
