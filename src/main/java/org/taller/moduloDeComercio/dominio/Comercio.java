@@ -1,5 +1,8 @@
 package org.taller.moduloDeComercio.dominio;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.Id;
 
 public class Comercio {
@@ -10,7 +13,7 @@ public class Comercio {
     private String telefonoComercio;
     private String mailComercio;
     private String contraComercio;
-    //lista con todos los POS que tiene
+    private List<POS> listaPOS; //lista con todos los POS que tiene
 
     //constructor completo
     public Comercio(String rut, String nombre, String direccion, String telefono, String mail, String contra) {
@@ -20,6 +23,7 @@ public class Comercio {
         this.telefonoComercio = telefono;
         this.mailComercio = mail;
         this.contraComercio = contra;
+        this.listaPOS = new ArrayList<>();
     }
 
 
@@ -53,6 +57,9 @@ public class Comercio {
         return contraComercio;
     }
 
+    public List<POS> getPos() {
+        return listaPOS;
+    }
 
     //setters
     public void setRut(String rut) {
@@ -77,6 +84,24 @@ public class Comercio {
 
     public void setContraComercio(String contra) {
         this.contraComercio = contra;
+    }
+
+    public void setPos(List<POS> pos) {
+        this.listaPOS = pos;
+    }
+
+    
+    //operacion para agregar la id de un POS a la lista del comercio
+    public void agregarPOS(POS pos) {
+        this.listaPOS.add(pos);
+    }
+
+    //operacion para buscar el POS con el id que le entra
+    public POS buscarPOSPorId(int id) {
+        for (POS pos : listaPOS) {
+            if (pos.getIdPOS() == id) return pos;
+        }
+        return null;
     }
 
 
