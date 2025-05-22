@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.taller.moduloDeComercio.aplicacion.InterfaceModuloComercio;
+import jakarta.enterprise.context.ApplicationScoped;
 import org.taller.moduloDeComercio.dominio.Comercio;
 import org.taller.moduloDeComercio.dominio.DatosComercio;
 import org.taller.moduloDeComercio.dominio.POS;
-import org.taller.moduloDeComercio.interfase.ListenerEventosComercio;
+import org.taller.moduloDeComercio.interfase.eventos.ListenerEventosComercio;
 import org.taller.moduloDeComercio.repositorio.RepositorioComercio;
 
+@ApplicationScoped
 public class ImplModuloComercio implements InterfaceModuloComercio {
     private RepositorioComercio repositorioComercio = new RepositorioComercio(); //esto va a ser un jpa en realidad
     //por ahora dejo esto
