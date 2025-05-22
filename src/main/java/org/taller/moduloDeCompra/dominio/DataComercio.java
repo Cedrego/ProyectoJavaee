@@ -1,0 +1,17 @@
+package org.taller.moduloDeCompra.dominio;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+
+public DataComercio {
+
+    Integer id;
+    String desc;
+    float importe;
+
+    DataComercio(Integer rut,String direccion,Integer telefono,String mail){}
+}
