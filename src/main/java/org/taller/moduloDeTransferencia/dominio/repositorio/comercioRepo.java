@@ -1,10 +1,7 @@
 package org.taller.moduloDeTransferencia.dominio.repositorio;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import org.taller.moduloDeTransferencia.dominio.Comercio;
-import org.taller.moduloDeTransferencia.dominio.Deposito;
 
 public class comercioRepo {
      private List<Comercio> comercios = new ArrayList<>();

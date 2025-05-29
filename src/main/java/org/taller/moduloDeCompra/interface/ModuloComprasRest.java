@@ -1,4 +1,3 @@
-package org.taller.moduloDeCompra.rest;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -54,7 +53,7 @@ public class ModuloComprasRest {
     @Path("/monto-actual-vendido")
     public Response montoActualVendido(@QueryParam("idcomercio") Integer idComercio) {
         try {
-            String json = moduloCompras.montoActualVendido(idComercio);
+            String json = String.valueOf(moduloCompras.montoActualVendido(idComercio));
             return Response.ok(json).build();
         } catch (IllegalArgumentException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();

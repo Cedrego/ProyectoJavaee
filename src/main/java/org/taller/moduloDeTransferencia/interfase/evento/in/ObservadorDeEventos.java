@@ -1,10 +1,8 @@
 package org.taller.moduloDeTransferencia.interfase.evento.in;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
 
 import java.util.logging.Logger;
-import org.taller.moduloDeTransferencia.dominio.Comercio;
 import org.taller.moduloDeTransferencia.dominio.repositorio.comercioRepo;
 
 

@@ -1,5 +1,13 @@
 package org.taller.moduloDeCompra.dominio;
 import jakarta.json.bind.annotation.JsonbProperty;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+
+
 public class DataCompra {
     @JsonbProperty("id")
     public Integer id;
@@ -18,18 +26,10 @@ public class DataCompra {
 
     DataCompra(Integer id){
         this.id=id;
-        float importe=0;
-        DataFecha fecha=null;
-        String desc=null;
-        DataTarjeta tarjeta=null;
-    }
-
-    DataCompra(Integer id,float importe,DataFecha fecha,String desc,DataTarjeta tarjeta){
-        this.id=id;
-        this.importe=importe;
-        this.fecha=fecha;
-        this.desc=desc;
-        this.tarjeta=tarjeta;
+        this.importe=0;
+        this.fecha=null;
+        this.desc=null;
+        this.tarjeta=null;
     }
 
     public Integer getId() {

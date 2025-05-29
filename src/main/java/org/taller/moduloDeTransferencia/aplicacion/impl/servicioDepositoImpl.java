@@ -1,17 +1,10 @@
 package org.taller.moduloDeTransferencia.aplicacion.impl;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
-
-import java.time.LocalDate;
 import java.util.List;
-
 import org.taller.moduloDeTransferencia.aplicacion.servicioDeposito;
 import org.taller.moduloDeTransferencia.dominio.DataFecha;
 import org.taller.moduloDeTransferencia.dominio.Deposito;
 import org.taller.moduloDeTransferencia.dominio.repositorio.depositoRepo;
-
-import jakarta.persistence.EntityManager;
 
 @ApplicationScoped
 public class servicioDepositoImpl implements servicioDeposito {

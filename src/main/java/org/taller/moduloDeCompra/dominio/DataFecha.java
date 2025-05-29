@@ -1,6 +1,5 @@
 package org.taller.moduloDeCompra.dominio;
 import java.time.LocalDate;
-
 import jakarta.json.bind.annotation.JsonbProperty;
 
 public class DataFecha {
@@ -12,6 +11,16 @@ public class DataFecha {
 
     @JsonbProperty("anio")
     public int anio;
+
+    
+    public DataFecha() {
+    }
+
+    public DataFecha(int dia, int mes, int anio) {
+        this.dia = dia;
+        this.mes = mes;
+        this.anio = anio;
+    }
 
     public static DataFecha hoy() {
         LocalDate ahora = LocalDate.now();

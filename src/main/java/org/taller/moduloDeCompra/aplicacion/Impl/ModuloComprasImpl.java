@@ -1,20 +1,25 @@
 // Lógica desacoplada de REST
 package org.taller.moduloDeCompra.aplicacion.Impl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.taller.moduloDeCompra.aplicacion.ModuloCompras;
-import org.taller.moduloDeCompra.dominio.*;
+import org.taller.moduloDeCompra.dominio.Comercio;
+import org.taller.moduloDeCompra.dominio.DataCompra;
+import org.taller.moduloDeCompra.dominio.DataFecha;
 import org.taller.moduloDeCompra.persistencia.ComercioService;
 import org.taller.moduloDeCompra.persistencia.CompraService;
 
 import jakarta.inject.Inject;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class ModuloComprasImpl implements ModuloCompras {
 
     @Inject
     ComercioService comercioService;
-    
+    @Inject
+    CompraService compraService;
+
     @Override
     public void procesarPago(DataCompra datosCompra) {
         int monto = Math.round(datosCompra.getImporte());
@@ -47,26 +52,27 @@ public class ModuloComprasImpl implements ModuloCompras {
     @Override
     public List<DataCompra> resumenVentasDiarias(Integer idComercio) {
         Comercio comercio = comercioService.getComercioPorRut(idComercio);
-        if (comercio == null) return null;
+        if (comercio == null) return List.of(); // Evita null
         DataFecha hoy = DataFecha.hoy();
-        return comercio.getPosList().stream()
-                .flatMap(pos -> pos.getCompras().stream())
+        return comercio.getCompras().stream()
                 .filter(compra -> compra.getFecha().equals(hoy))
                 .collect(Collectors.toList());
     }
+
     @Override
     public List<DataCompra> resumenVentasPorPeriodo(Integer idComercio, String fechaIni, String fechaEnd) {
-        return CompraService.listarVentasPorPeriodo(idComercio, fechaIni, fechaEnd);
+        return compraService.listarVentasPorPeriodo(idComercio, fechaIni, fechaEnd);
     }
     @Override
-    public double montoActualVendido(Integer idComercio) {
+    public float montoActualVendido(Integer idComercio) {
         Comercio comercio = comercioService.getComercioPorRut(idComercio);
-        if (comercio == null) return -1;
+        if (comercio == null) return -1f;
         DataFecha hoy = DataFecha.hoy();
-        return comercio.getPosList().stream()
-                .flatMap(pos -> pos.getCompras().stream())
+        return (float) comercio.getCompras().stream()
                 .filter(compra -> compra.getFecha().equals(hoy))
-                .mapToDouble(Compra::getImporte)
+                .mapToDouble(DataCompra::getImporte)
                 .sum();
     }
+
+
 }

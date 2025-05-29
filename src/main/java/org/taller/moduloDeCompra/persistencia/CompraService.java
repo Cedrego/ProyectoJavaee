@@ -1,11 +1,11 @@
+package org.taller.moduloDeCompra.persistencia;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.taller.moduloDeCompra.dominio.DataCompra;
 import org.taller.moduloDeCompra.dominio.DataFecha;
-
-import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
@@ -32,9 +32,9 @@ public class CompraService {
     }
 
     private boolean esFechaEnRango(DataFecha f, DataFecha ini, DataFecha fin) {
-        LocalDate fecha = LocalDate.of(f.Anio, f.Mes, f.Dia);
-        LocalDate desde = LocalDate.of(ini.Anio, ini.Mes, ini.Dia);
-        LocalDate hasta = LocalDate.of(fin.Anio, fin.Mes, fin.Dia);
+        LocalDate fecha = LocalDate.of(f.anio, f.mes, f.dia);
+        LocalDate desde = LocalDate.of(ini.anio, ini.mes, ini.dia);
+        LocalDate hasta = LocalDate.of(fin.anio, fin.mes, fin.dia);
         return (fecha.isEqual(desde) || fecha.isAfter(desde)) &&
                (fecha.isEqual(hasta) || fecha.isBefore(hasta));
     }
