@@ -1,48 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-
   <groupId>com.proyecto</groupId>
   <artifactId>proyecto-javaee</artifactId>
   <version>1.0-SNAPSHOT</version>
+  <packaging>war</packaging>  <!-- ¡Importante para WAR -->
 
   <name>proyecto-javaee</name>
-  <!-- FIXME change it to the project's website -->
   <url>http://www.example.com</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.7</maven.compiler.source>
-    <maven.compiler.target>1.7</maven.compiler.target>
   </properties>
 
   <dependencies>
+    <!-- Dependencias de pruebas -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.11</version>
       <scope>test</scope>
     </dependency>
-     <!-- Dependencias que agregue  -->
-     <dependency>
-    <groupId>org.projectlombok</groupId>
-    <artifactId>lombok</artifactId>
-    <version>1.18.32</version>
-    <scope>provided</scope>
-    </dependency>
+
     <dependency>
-        <groupId>jakarta.persistence</groupId>
-        <artifactId>jakarta.persistence-api</artifactId>
-        <version>3.1.0</version>
+      <groupId>jakarta.persistence</groupId>
+      <artifactId>jakarta.persistence-api</artifactId>
+      <version>3.1.0</version>
     </dependency>
-     <!-- Dependencia de Lombok -->
+
     <dependency>
-        <groupId>org.projectlombok</groupId>
-        <artifactId>lombok</artifactId>
-        <version>1.18.32</version>
-        <scope>provided</scope>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.32</version>
+      <scope>provided</scope>
     </dependency>
     
   <dependency>
@@ -51,6 +45,13 @@
       <version>2.0.0</version>
   </dependency>
 
+    <dependency>
+        <groupId>jakarta.ws.rs</groupId>
+        <artifactId>jakarta.ws.rs-api</artifactId>
+        <version>3.1.0</version>
+        <scope>provided</scope>
+    </dependency>
+    
     <dependency>
     <groupId>jakarta.enterprise</groupId>
     <artifactId>jakarta.enterprise.cdi-api</artifactId>
@@ -71,6 +72,13 @@
 			<version>3.24.2</version>
 			<scope>test</scope>
 		</dependency>
+
+  <dependency>
+      <groupId>jakarta.json.bind</groupId>
+      <artifactId>jakarta.json.bind-api</artifactId>
+      <version>3.0.0</version>
+  </dependency>
+
 		<dependency>
 			<groupId>org.jboss.weld</groupId>
 			<artifactId>weld-junit5</artifactId>
@@ -85,36 +93,66 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<dependency>
-			<groupId>io.micrometer</groupId>
-			<artifactId>micrometer-commons</artifactId>
-			<version>1.12.0</version>
-		</dependency>
-
 		<!-- https://mvnrepository.com/artifact/io.micrometer/micrometer-registry-influx -->
 		<dependency>
 			<groupId>io.micrometer</groupId>
 			<artifactId>micrometer-registry-influx</artifactId>
 			<version>1.13.0</version>
 		</dependency>
+
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>5.10.0</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>5.11.0</version>
+      <scope>test</scope>
+    </dependency>
+
+  <!-- EclipseLink como proveedor JPA -->
+  <dependency>
+    <groupId>org.eclipse.persistence</groupId>
+    <artifactId>eclipselink</artifactId>
+    <version>4.0.2</version>
+  </dependency>
+
+  <!-- Conector MySQL -->
+  <dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <version>8.0.33</version>
+  </dependency>
+
+
   </dependencies>
 
   <build>
-    <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
+    <finalName>ProyectoJavaee</finalName>  <!-- Nombre del WAR -->
+
+    <pluginManagement>
       <plugins>
-        <!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
+        <!-- Tus plugins actuales -->
         <plugin>
           <artifactId>maven-clean-plugin</artifactId>
           <version>3.1.0</version>
         </plugin>
-        <!-- default lifecycle, jar packaging: see https://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
         <plugin>
           <artifactId>maven-resources-plugin</artifactId>
           <version>3.0.2</version>
         </plugin>
         <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.8.0</version>
+          <configuration>
+            <source>21</source>
+            <target>21</target>
+          </configuration>
         </plugin>
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
@@ -132,7 +170,6 @@
           <artifactId>maven-deploy-plugin</artifactId>
           <version>2.8.2</version>
         </plugin>
-        <!-- site lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#site_Lifecycle -->
         <plugin>
           <artifactId>maven-site-plugin</artifactId>
           <version>3.7.1</version>
@@ -142,16 +179,48 @@
           <version>3.0.0</version>
         </plugin>
 
+        <!-- Plugin WildFly para desplegar -->
         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.8.0</version>
-            <configuration>
-                <source>1.8</source>
-                <target>1.8</target>
-            </configuration>
+          <groupId>org.wildfly.plugins</groupId>
+          <artifactId>wildfly-maven-plugin</artifactId>
+          <version>2.0.1.Final</version>
+          <configuration>
+            <hostname>localhost</hostname>
+            <port>9990</port> <!-- Puerto de gestión WildFly -->
+            <username>tu-usuario</username> <!-- Cambia por tu usuario -->
+            <password>tu-password</password> <!-- Cambia por tu contraseña -->
+            <filename>${project.build.finalName}.war</filename>
+            <contextRoot>/ProyectoJavaee</contextRoot> <!-- Context root deseado -->
+          </configuration>
         </plugin>
+
       </plugins>
     </pluginManagement>
+
+    <plugins>
+      <!-- WAR Plugin actualizado para Java 21 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>3.3.1</version>
+      </plugin>
+
+      <!-- WildFly Maven Plugin para 'wildfly:deploy' -->
+      <plugin>
+        <groupId>org.wildfly.plugins</groupId>
+        <artifactId>wildfly-maven-plugin</artifactId>
+        <version>2.0.1.Final</version>
+        <configuration>
+          <hostname>localhost</hostname>
+          <port>9990</port>
+          <!-- Descomenta si usas auth -->
+          <!--
+          <username>admin</username>
+          <password>admin123</password>
+          -->
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
 </project>
+

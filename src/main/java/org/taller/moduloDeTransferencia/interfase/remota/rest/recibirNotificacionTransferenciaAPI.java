@@ -11,6 +11,7 @@ import java.util.List;
 import org.taller.moduloDeTransferencia.aplicacion.servicioDeposito;
 import org.taller.moduloDeTransferencia.dominio.DataFecha;
 import org.taller.moduloDeTransferencia.dominio.Deposito;
+import org.taller.moduloDeTransferencia.interfase.remota.rest.NotificacionDepositoDTO;
 
 @ApplicationScoped
 @Path("/transferencia")
