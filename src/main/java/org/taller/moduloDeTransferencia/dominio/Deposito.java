@@ -20,12 +20,14 @@ public class Deposito {
     DataFecha fecha;
 
     private int idCompra;       // Identificador de la compra
-    private int rutComercio;     // RUT del comercio
+    @ManyToOne
+    @JoinColumn(name = "cuenta_id")
+    private CuentaBancoComercio Cuenta;     // RUT del comercio
 
-    public Deposito(float importe, DataFecha fecha, int idCompra, int rutComercio) {
+    public Deposito(float importe, DataFecha fecha, int idCompra, CuentaBancoComercio Cuenta) {
         this.importe = importe;
         this.fecha = fecha;
         this.idCompra = idCompra;
-        this.rutComercio = rutComercio;
+        this.Cuenta = Cuenta;
     }
 }

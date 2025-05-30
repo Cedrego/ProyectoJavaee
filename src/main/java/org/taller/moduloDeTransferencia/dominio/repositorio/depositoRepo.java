@@ -20,11 +20,13 @@ public class depositoRepo {
         return new ArrayList<>(depositos); // devuelve copia para evitar modificaciones externas
     }
 
-    public List<Deposito> buscarPorRutYFecha(int rutComercio, DataFecha fecha) {
-    return depositos.stream()//Stream permite procesarla con operaciones funcionales como filter.
-            .filter(d -> d.getRutComercio() == rutComercio && //iltra los elementos del stream, es decir, elige solo los depósitos que cumplan cierta condición
+    public List<Deposito> buscarPorRutYFecha(String rutComercio, DataFecha fecha) {
+    return depositos.stream()
+            .filter(d -> d.getCuenta() != null &&
+                         d.getCuenta().getComercio() != null &&
+                         rutComercio.equals(d.getCuenta().getComercio().getRut()) &&
                          d.getFecha().equals(fecha))
             .toList();
-    }
+}
     
 }

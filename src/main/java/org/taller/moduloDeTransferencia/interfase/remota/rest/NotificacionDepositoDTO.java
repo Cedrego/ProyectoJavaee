@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class NotificacionDepositoDTO {
     private int idCompra;
-    private int rutComercio;
+    private String rutComercio;
     private float monto; // monto bruto
 
 

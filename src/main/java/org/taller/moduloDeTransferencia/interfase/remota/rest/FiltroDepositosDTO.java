@@ -3,7 +3,7 @@ import lombok.Data;
 
 @Data
 public class FiltroDepositosDTO {
-    private int rutComercio;
+    private String rutComercio;
     private int dia;
     private int mes;
     private int anio;
