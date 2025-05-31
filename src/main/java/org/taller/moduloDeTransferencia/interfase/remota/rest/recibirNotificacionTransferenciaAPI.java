@@ -22,7 +22,7 @@ public class recibirNotificacionTransferenciaAPI {
 
     //curl -X POST http://localhost:8080/api/transferencia/notificacion \
     //-H "Content-Type: application/json" \
-    // -d '{"idCompra": 1, "rutComercio": 12345678, "monto": 10000}'
+    // -d '{"idCompra": 1, "rutComercio": 123, "monto": 10000}'
     @POST
     @Path("/notificacion")
     public Response recibirNotificacion(NotificacionDepositoDTO dto) {

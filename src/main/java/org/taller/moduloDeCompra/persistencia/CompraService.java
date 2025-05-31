@@ -13,6 +13,10 @@ public class CompraService {
 
     private List<DataCompra> compras;
 
+    public CompraService() {
+        this.compras = List.of(); // o dejarlo nulo si luego lo vas a setear
+    }
+
     public CompraService(List<DataCompra> compras) {
         this.compras = compras;
     }
