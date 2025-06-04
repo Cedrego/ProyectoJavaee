@@ -1,27 +1,20 @@
 package org.taller.moduloDeCompra.persistencia;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.taller.moduloDeCompra.dominio.DataCompra;
 import org.taller.moduloDeCompra.dominio.DataFecha;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.annotation.PostConstruct;
 
 @ApplicationScoped
 public class CompraService {
 
     private List<DataCompra> compras;
 
-    public CompraService() {
-        this.compras = new ArrayList<>();
-    }
-
-    @PostConstruct
-    public void init() {
-        // Aquí puedes cargar compras de prueba
+    public CompraService(List<DataCompra> compras) {
+        this.compras = compras;
     }
 
     public List<DataCompra> listarVentasPorPeriodo(Integer idComercio, String fechaIniStr, String fechaEndStr) {
@@ -46,4 +39,3 @@ public class CompraService {
                (fecha.isEqual(hasta) || fecha.isBefore(hasta));
     }
 }
-

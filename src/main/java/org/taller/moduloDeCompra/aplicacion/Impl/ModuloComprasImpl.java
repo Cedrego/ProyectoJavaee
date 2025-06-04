@@ -10,10 +10,9 @@ import org.taller.moduloDeCompra.dominio.DataCompra;
 import org.taller.moduloDeCompra.dominio.DataFecha;
 import org.taller.moduloDeCompra.persistencia.ComercioService;
 import org.taller.moduloDeCompra.persistencia.CompraService;
-import jakarta.enterprise.context.ApplicationScoped;
 
 import jakarta.inject.Inject;
-@ApplicationScoped
+
 public class ModuloComprasImpl implements ModuloCompras {
 
     @Inject
