@@ -1,38 +1,39 @@
 package org.taller.moduloDeMonitoreo.aplicacion;
 
+import org.taller.moduloDeMonitoreo.dominio.eventos.EventoPago;
+import org.taller.moduloDeMonitoreo.infraestructura.eventos.BusDeEventos;
 import org.taller.moduloDeMonitoreo.dominio.ServicioMonitoreo;
-import org.taller.moduloDeMonitoreo.repositorio.RepositorioEventos;
 
 public class ServicioMonitoreoImpl implements ServicioMonitoreo {
 
-    private final RepositorioEventos repositorio;
+    private final BusDeEventos bus;
 
-    public ServicioMonitoreoImpl(RepositorioEventos repositorio) {
-        this.repositorio = repositorio;
+    public ServicioMonitoreoImpl(BusDeEventos bus) {
+        this.bus = bus;
     }
 
     @Override
     public void notificarPago() {
-        repositorio.guardarEvento("PAGO", "Se realizó un pago");
+        bus.publicar(new EventoPago("PAGO", "Se realizó un pago"));
     }
 
     @Override
     public void notificarPagoOk() {
-        repositorio.guardarEvento("PAGO_OK", "Pago exitoso");
+        bus.publicar(new EventoPago("PAGO_OK", "Pago exitoso"));
     }
 
     @Override
     public void notificarPagoError() {
-        repositorio.guardarEvento("PAGO_ERROR", "Pago rechazado");
+        bus.publicar(new EventoPago("PAGO_ERROR", "Pago rechazado"));
     }
 
     @Override
     public void notificarTransferencia() {
-        repositorio.guardarEvento("TRANSFERENCIA", "Se realizó una transferencia");
+        bus.publicar(new EventoPago("TRANSFERENCIA", "Se realizó una transferencia"));
     }
 
     @Override
     public void notificarReclamoComercio() {
-        repositorio.guardarEvento("RECLAMO", "Reclamo del comercio recibido");
+        bus.publicar(new EventoPago("RECLAMO", "Reclamo del comercio recibido"));
     }
 }

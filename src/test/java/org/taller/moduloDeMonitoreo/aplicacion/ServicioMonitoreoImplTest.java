@@ -2,50 +2,55 @@ package org.taller.moduloDeMonitoreo.aplicacion;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.taller.moduloDeMonitoreo.infraestructura.eventos.BusDeEventos;
 import org.taller.moduloDeMonitoreo.repositorio.RepositorioEventos;
+import org.taller.moduloDeMonitoreo.dominio.ServicioMonitoreo;
 
 import static org.mockito.Mockito.*;
 
-class ServicioMonitoreoImplTest {
+public class ServicioMonitoreoImplTest {
 
-
-	private RepositorioEventos repositorio;
-    private ServicioMonitoreoImpl servicio;
+    private RepositorioEventos repositorioMock;
+    private BusDeEventos bus;
+    private ServicioMonitoreo servicio;
 
     @BeforeEach
-    void setUp() {
-        repositorio = mock(RepositorioEventos.class);
-        servicio = new ServicioMonitoreoImpl(repositorio);
+    public void setUp() {
+        repositorioMock = mock(RepositorioEventos.class);
+        bus = new BusDeEventos();
+        bus.registrar(new ObservadorMonitoreo(repositorioMock));
+        servicio = new ServicioMonitoreoImpl(bus);
     }
 
     @Test
-    void testNotificarPago() {
+    public void testNotificarPago() {
         servicio.notificarPago();
-        verify(repositorio).guardarEvento("PAGO", "Se realizó un pago");
+        verify(repositorioMock).guardarEvento("PAGO", "Se realizó un pago");
     }
 
     @Test
-    void testNotificarPagoOk() {
+    public void testNotificarPagoOk() {
         servicio.notificarPagoOk();
-        verify(repositorio).guardarEvento("PAGO_OK", "Pago exitoso");
+        verify(repositorioMock).guardarEvento("PAGO_OK", "Pago exitoso");
     }
 
     @Test
-    void testNotificarPagoError() {
+    public void testNotificarPagoError() {
         servicio.notificarPagoError();
-        verify(repositorio).guardarEvento("PAGO_ERROR", "Pago rechazado");
+        verify(repositorioMock).guardarEvento("PAGO_ERROR", "Pago rechazado");
     }
 
     @Test
-    void testNotificarTransferencia() {
+    public void testNotificarTransferencia() {
         servicio.notificarTransferencia();
-        verify(repositorio).guardarEvento("TRANSFERENCIA", "Se realizó una transferencia");
+        verify(repositorioMock).guardarEvento("TRANSFERENCIA", "Se realizó una transferencia");
     }
 
     @Test
-    void testNotificarReclamoComercio() {
+    public void testNotificarReclamoComercio() {
         servicio.notificarReclamoComercio();
-        verify(repositorio).guardarEvento("RECLAMO", "Reclamo del comercio recibido");
+        verify(repositorioMock).guardarEvento("RECLAMO", "Reclamo del comercio recibido");
     }
 }
+
 	

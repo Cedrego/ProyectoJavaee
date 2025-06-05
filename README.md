@@ -1,24 +1,74 @@
 # Aquí va la documentación del proyecto =)
 modulo de monitoreo pronto solo faltan los tests
 estan pronto los test
-breve explicacion de como se implementaron los test
-@BeforeEach
-void setUp() {
-    repositorio = mock(RepositorioEventos.class);
-    servicio = new ServicioMonitoreoImpl(repositorio);
-}
+brebe explicacion de como funciona modulo de monitoreo
 
-¿Qué hace?
+// 1. Crear el bus de eventos
+        BusDeEventos bus = new BusDeEventos();
 
-    @BeforeEach:
-    Esta anotación indica que el método setUp() se debe ejecutar antes de cada método de prueba (@Test). Sirve para preparar el entorno del test.
+        // 2. Crear el repositorio (acá usamos uno de consola como ejemplo)
+        RepositorioEventos repositorio = new RepositorioEventos() {
+            @Override
+            public void guardarEvento(String tipo, String mensaje) {
+                System.out.println("📌 Evento registrado -> Tipo: " + tipo + ", Mensaje: " + mensaje);
+            }
+        };
 
-    mock(RepositorioEventos.class):
-    Esto crea un mock (una simulación) del repositorio. Se está usando probablemente Mockito, una biblioteca popular para pruebas en Java.
+        // 3. Registrar el observador de monitoreo
+        ObservadorMonitoreo observador = new ObservadorMonitoreo(repositorio);
+        bus.registrar(observador);
 
-        El objetivo de un mock es simular el comportamiento de una clase para que puedas probar otras sin depender de su implementación real (por ejemplo, una base de datos).
+        // 4. Crear el servicio de monitoreo
+        ServicioMonitoreo servicio = new ServicioMonitoreoImpl(bus);
 
-    servicio = new ServicioMonitoreoImpl(repositorio);:
-    Se crea una instancia del servicio que se quiere probar (ServicioMonitoreoImpl), pasándole el mock del repositorio como dependencia.
+        // 5. Usar el servicio para emitir eventos
+        servicio.notificarPago();
+        servicio.notificarPagoOk();
+        servicio.notificarPagoError();
+        servicio.notificarTransferencia();
+        servicio.notificarReclamoComercio();
 
-        Así puedes probar el servicio sin tener que conectarte a una base de datos real, ya que usas el repositorio simulado.
+Modulo de Transferencia
+Primero creamos las clases en la carpeta de dominio, las cuales son, comercio, Cuenta Banco Comercio
+Deposito, y yo cree un DataFecha(no es parte del modelo de dominio) cabe reaclcar que ya estube mapeando para
+la base de datos en dichas clases.
+
+Despues de crear las clases creamos en Repositorio dentro de Dominio las clases encargadas 
+de almacenar los datos de manera local.
+
+Despues en la carpeta de aplicacion creamos una carpeta servicioDeposito el cual tendra las funciones
+ encargadas de crear e insertar un deposito y otra para listar.
+
+Dentro de la carpeta aplicacion estara la carpeta implemntacion la cual contendra la logica 
+de dichas funciones.
+
+Despues en la carpeta interface/remonta/rest tendremos la API rest que atravez del Curl 
+obtendra los datos para ser enviados a la seccion de aplicacion la cual se encargara
+de ejecutar la logica.
+
+Detalles del codigo quedaran especificados en comentarios en el mismo.
+
+
+#NO ESTA EN EL IGNORE
+
+
+como se usa el modulo monitoreo
+// 1. Crear el bus de eventos
+        BusDeEventos bus = new BusDeEventos();
+
+        // 2. Crear el repositorio (acá usamos uno de consola como ejemplo)
+        RepositorioEventos repositorio = new RepositorioEventos() {
+            @Override
+            public void guardarEvento(String tipo, String mensaje) {
+                System.out.println("📌 Evento registrado -> Tipo: " + tipo + ", Mensaje: " + mensaje);
+            }
+        };
+
+        // 3. Registrar el observador de monitoreo
+        ObservadorMonitoreo observador = new ObservadorMonitoreo(repositorio);
+        bus.registrar(observador);
+
+        // 4. Crear el servicio de monitoreo
+        ServicioMonitoreo servicio = new ServicioMonitoreoImpl(bus);
+
+        servicio.notificarReclamoComercio();
