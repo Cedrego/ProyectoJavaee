@@ -5,18 +5,22 @@
                                  https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
              version="3.0">
 
-  <persistence-unit name="miUnidadPersistencia" transaction-type="RESOURCE_LOCAL">
+  <persistence-unit name="miUnidadPersistencia" transaction-type="JTA">
+  <jta-data-source>java:/jdbc/TallerJavaDS</jta-data-source>
+
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
 
     <!-- Agregá tus clases de entidad aquí -->
-    <!-- <class>tuproyecto.entidades.MiEntidad</class> -->
+  <class>org.taller.moduloDeTransferencia.infraestructura.persistencia.CuentaBancoComercioMap</class>
+  <class>org.taller.moduloDeTransferencia.infraestructura.persistencia.DepositoMap</class>
+  <class>org.taller.moduloDeComercio.dominio.POS</class>
+  <class>org.taller.moduloDeComercio.dominio.ReclamoComercio</class>
+  <class>org.taller.moduloDeComercio.dominio.Comercio</class>
+  <class>org.taller.moduloDeCompra.infraestructura.persistencia.CompraMap</class>
+  <class>org.taller.moduloDeTransferencia.dominio.DataFecha</class>
 
     <properties>
-      <!-- Configuración JDBC para MySQL/MariaDB -->
-      <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
-      <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/TallerJava"/><!-- Cambia "TallerJava" por tu base de datos -->
-      <property name="jakarta.persistence.jdbc.user" value="root"/>
-      <property name="jakarta.persistence.jdbc.password" value=""/>
+   
 
       <!-- Opcional: creación automática de tablas -->
       <property name="jakarta.persistence.schema-generation.database.action" value="create"/>

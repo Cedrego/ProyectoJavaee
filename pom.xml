@@ -211,12 +211,9 @@
         <version>2.0.1.Final</version>
         <configuration>
           <hostname>localhost</hostname>
-          <port>8080</port>
-          <!-- Descomenta si usas auth -->
-          <!--
+          <port>9990</port>
           <username>admin</username>
           <password>admin123</password>
-          -->
         </configuration>
       </plugin>
     </plugins>

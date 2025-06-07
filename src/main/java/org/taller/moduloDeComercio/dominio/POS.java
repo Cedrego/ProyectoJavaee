@@ -1,15 +1,26 @@
 package org.taller.moduloDeComercio.dominio;
+import jakarta.persistence.*;
+import jakarta.xml.bind.annotation.XmlTransient;
 
-import jakarta.persistence.Id;
 
+    @Entity
+    @Table(name = "POS")
     public class POS {
-        @Id
-        private int idPOS;
-        private Comercio comercio;
-        private boolean habilitadoPOS;
 
-        public POS(int id, Comercio comercio) {
-            this.idPOS = id;
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private int idPOS;
+
+
+        @ManyToOne
+        @JoinColumn(name = "Comercio_id")
+        private Comercio comercio;
+
+        private boolean habilitadoPOS;
+        public POS() {
+            // Constructor por defecto requerido por JPA
+        }
+        public POS( Comercio comercio) {
             this.comercio=comercio;
             this.habilitadoPOS = false;
         }
@@ -17,7 +28,7 @@ import jakarta.persistence.Id;
         public int getIdPOS() {
             return idPOS;
         }
-        
+        @XmlTransient
         public Comercio getComercio(){
             return comercio;
         }

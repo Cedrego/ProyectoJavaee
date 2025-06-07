@@ -20,7 +20,7 @@ public class recibirNotificacionTransferenciaAPI {
     @Inject
     servicioDeposito SD;
 
-    //curl -X POST http://localhost:8080/api/transferencia/notificacion \
+    //curl -X POST http://localhost:8080/ProyectoJavaee/transferencia/notificacion \
     //-H "Content-Type: application/json" \
     // -d '{"idCompra": 1, "rutComercio": 123, "monto": 10000}'
     @POST
@@ -30,9 +30,9 @@ public class recibirNotificacionTransferenciaAPI {
         return Response.ok().build();
     }
 
-    // curl -X POST http://localhost:8080/api/transferencia/listar \
+    // curl -X POST http://localhost:8080/ProyectoJavaee/transferencia/listar \
     //-H "Content-Type: application/json" \
-    //-d '{"rutComercio": 12345678, "dia": 22, "mes": 5, "anio": 2025}'
+    //-d '{"rutComercio": 123, "dia": 22, "mes": 5, "anio": 2025}'
     @POST
     @Path("/listar")
     @Consumes(MediaType.APPLICATION_JSON)

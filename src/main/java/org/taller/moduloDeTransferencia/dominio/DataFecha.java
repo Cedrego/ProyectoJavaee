@@ -5,7 +5,7 @@ import java.time.LocalDate;
 
 import jakarta.persistence.Embeddable;
 @Embeddable
-public class DataFecha implements Serializable {
+public class DataFecha implements Serializable{
     private int dia;
     private int mes;
     private int anio;

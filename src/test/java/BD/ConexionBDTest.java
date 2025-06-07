@@ -1,9 +1,10 @@
 package BD;
-
+// Este código es para probar la conexión a la base de datos usando JUnit 5.
+//Asegurase de conectar Wildfly a la base de datos y que el archivo persistence.xml esté configurado correctamente.
 import org.junit.jupiter.api.Test;
 import java.sql.Connection;
 import static org.junit.jupiter.api.Assertions.*;
-import BD.ConexionBD;
+
    
 public class ConexionBDTest {
 

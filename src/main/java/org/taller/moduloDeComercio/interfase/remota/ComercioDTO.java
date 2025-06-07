@@ -76,7 +76,7 @@ public class ComercioDTO {
 
         if (listaPOS != null) {
             for (POSDTO posDto : listaPOS) {
-                POS pos = new POS(posDto.getIdPOS(), comercio);
+                POS pos = new POS(comercio); // Usar el nombre del POS
                 pos.setHabilitadoPOS(posDto.isHabilitadoPOS());
                 lista.add(pos);
             }

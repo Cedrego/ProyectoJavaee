@@ -1,7 +1,9 @@
 package org.taller.moduloDeCompra.dominio;
 import java.time.LocalDate;
 import jakarta.json.bind.annotation.JsonbProperty;
+import jakarta.persistence.Embeddable;
 
+@Embeddable
 public class DataFecha {
     @JsonbProperty("dia")
     public int dia;
