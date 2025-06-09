@@ -2,6 +2,8 @@ package org.taller.moduloDeCompra.dominio;
 import java.time.LocalDate;
 import jakarta.json.bind.annotation.JsonbProperty;
 import jakarta.persistence.Embeddable;
+import lombok.Data;
+@Data
 
 @Embeddable
 public class DataFecha {

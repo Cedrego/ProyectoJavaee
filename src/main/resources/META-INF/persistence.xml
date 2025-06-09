@@ -16,7 +16,10 @@
   <class>org.taller.moduloDeComercio.dominio.POS</class>
   <class>org.taller.moduloDeComercio.dominio.ReclamoComercio</class>
   <class>org.taller.moduloDeComercio.dominio.Comercio</class>
-  <class>org.taller.moduloDeCompra.infraestructura.persistencia.CompraMap</class>
+
+  <class>org.taller.moduloDeCompra.dominio.DataCompra</class>
+  <class>org.taller.moduloDeCompra.dominio.DataTarjeta</class>
+  
   <class>org.taller.moduloDeTransferencia.dominio.DataFecha</class>
 
     <properties>
