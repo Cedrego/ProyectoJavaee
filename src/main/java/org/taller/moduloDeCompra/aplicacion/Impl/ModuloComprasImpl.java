@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.taller.moduloDeCompra.aplicacion.ModuloCompras;
-import org.taller.moduloDeCompra.dominio.Comercio;
 import org.taller.moduloDeCompra.dominio.DataCompra;
 import org.taller.moduloDeCompra.dominio.DataFecha;
 import org.taller.moduloDeCompra.dominio.DataTarjeta;

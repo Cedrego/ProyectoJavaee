@@ -47,7 +47,7 @@ public class CompraService {
         
     }
 
-    //ACA HECHO POR THIAGO
+    /*ACA HECHO POR THIAGO
     private List<DataCompra> compras;
 
     public CompraService() {
@@ -57,14 +57,14 @@ public class CompraService {
     public CompraService(List<DataCompra> compras) {
         this.compras = compras;
     }
-
+    */
     //Modificado por Enzo
     public List<DataCompra> listarVentasPorPeriodo(String idComercio, String fechaIniStr, String fechaEndStr) {
         DataFecha fechaIni = parseFecha(fechaIniStr);
         DataFecha fechaEnd = parseFecha(fechaEndStr);
         List<DataCompra> compras = listarComprasPorRutComercio(idComercio);
 
-        return compras.stream()
+            return compras.stream()
             .filter(c -> esFechaEnRango(c.getFecha(), fechaIni, fechaEnd))
             .collect(Collectors.toList());
     }

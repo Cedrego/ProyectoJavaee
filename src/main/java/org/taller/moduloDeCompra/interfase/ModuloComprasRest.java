@@ -85,10 +85,10 @@ curl -X GET "http://localhost:8080/ProyectoJavaee/api/compras/monto-actual-vendi
         "descripcion": "Pago de producto",
         "tarjeta": {
             "nro": "12345",
-            "marca": "VISA"
+            "marca": "VISA",
             "fechaVto": { "dia": 30, "mes": 12, "anio": 2025 }
         },
-            "idPos": 1
+            "idPos": 1,
             "rutComercio": 123
       }'
 */

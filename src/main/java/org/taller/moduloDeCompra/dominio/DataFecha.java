@@ -41,4 +41,11 @@ public class DataFecha {
         DataFecha f = (DataFecha) o;
         return this.dia == f.dia && this.mes == f.mes && this.anio == f.anio;
     }
+    @Override
+    public int hashCode() {
+        int result = Integer.hashCode(dia);
+        result = 31 * result + Integer.hashCode(mes);
+        result = 31 * result + Integer.hashCode(anio);
+        return result;
+    }
 }

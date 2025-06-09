@@ -1,18 +1,13 @@
 package org.taller.moduloDeCompra.persistencia;
 
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.taller.moduloDeCompra.dominio.Comercio;
-import org.taller.moduloDeCompra.dominio.DataCompra;
-import org.taller.moduloDeCompra.dominio.DataFecha;
-import org.taller.moduloDeCompra.dominio.DataTarjeta;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 
 import lombok.AllArgsConstructor;
