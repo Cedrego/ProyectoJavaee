@@ -1,61 +1,90 @@
 package org.taller.moduloDeTransferencia.aplicacion.impl;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import org.taller.moduloDeTransferencia.dominio.Comercio;
 import org.taller.moduloDeTransferencia.aplicacion.servicioDeposito;
 import org.taller.moduloDeTransferencia.dominio.CuentaBancoComercio;
 import org.taller.moduloDeTransferencia.dominio.DataFecha;
 import org.taller.moduloDeTransferencia.dominio.Deposito;
-import org.taller.moduloDeTransferencia.dominio.repositorio.comercioRepo;
+import org.taller.moduloDeTransferencia.dominio.repositorio.cuentaRepo;
 import org.taller.moduloDeTransferencia.dominio.repositorio.depositoRepo;
 
 @ApplicationScoped
 public class servicioDepositoImpl implements servicioDeposito {
-
-    private final depositoRepo repo = new depositoRepo(); // repositorio en memoria
-    private final comercioRepo repo2 = new comercioRepo(); // repositorio en memoria
-
+    @Inject
+    private  depositoRepo repo; // repositorio en memoria
+    
+    @Inject
+    private  cuentaRepo repo2; // repositorio en memoria
+    
+    @PersistenceContext
+    private EntityManager em;
+    
     @Override
-    public void realizarDeposito(int idCompra, String rutComercio, float monto) {
+    public void realizarDeposito(int idCompra, String rutComercio) {
+
+       Float monto;
+        try {
+            monto = em.createQuery(
+                    "SELECT c.importe FROM DataCompra c WHERE c.id = :idCompra", Float.class)
+                .setParameter("idCompra", idCompra)
+                .getSingleResult();
+        } catch (Exception e) {
+            System.out.println("❌ No se pudo obtener el monto de la compra con ID: " + idCompra);
+            return;
+        }
         float comision = monto * 0.02f;
         float montoNeto = monto - comision;
 
-        Comercio comercio = repo2.buscarPorRut(rutComercio);
-
-        if (comercio == null) {
-            System.out.println("❌ Comercio no encontrado con RUT: " + rutComercio);
-            return;
-        }
-
-        CuentaBancoComercio cuenta = comercio.getCuentaBancoComercio();
-
-        if (cuenta == null) {
-            System.out.println("❌ El comercio no tiene una cuenta bancaria asociada.");
-            return;
+        CuentaBancoComercio cuentaBanco = repo2.buscarPorRut(rutComercio);
+        if (cuentaBanco == null) {
+            throw new RuntimeException("❌ Cuenta bancaria no encontrada para el comercio con RUT: " + rutComercio);
         }
 
         Deposito deposito = new Deposito();
         deposito.setImporte(montoNeto);
         deposito.setIdCompra(idCompra);
-        deposito.setCuenta(cuenta); 
+        deposito.setCuenta(cuentaBanco); // Asignar la cuenta al depósito
         deposito.setFecha(DataFecha.now()); 
-
+        if (repo.existe(idCompra)) {
+            throw new RuntimeException("❌ Ya existe un depósito para la compra con ID: " + idCompra);
+        }
         repo.guardar(deposito);
-        cuenta.addDeposito(deposito); // Agregar el depósito a la cuenta
-        comercio.setCuentaBancoComercio(cuenta); // Actualizar la cuenta en el comercio
-        repo2.guardar(comercio); // Guardar el comercio actualizado con el nuevo depósito
-        System.out.println("✔ Depósito registrado:");
-        System.out.println("→ RUT Comercio: " + rutComercio);
-        System.out.println("→ ID Compra: " + idCompra);
-        System.out.println("→ Monto bruto: " + monto);
-        System.out.println("→ Comisión: " + comision);
-        System.out.println("→ Monto neto depositado: " + montoNeto);
+        cuentaBanco.addDeposito(deposito); // Agregar el depósito a la cuenta
+        repo2.Actualizar(cuentaBanco); // Guardar la cuenta actualizada
     }
     
     @Override
-    public List<Deposito> MostrarHistorialDeDepositos(String rutComercio, DataFecha fecha) {
-         return repo.buscarPorRutYFecha(rutComercio, fecha);   
+    public List<Deposito> MostrarHistorialDeDepositos(String rutComercio, String fechaIni, String fechaEnd) {
+        CuentaBancoComercio cuentaBanco = repo2.buscarPorRut(rutComercio);
+        if (cuentaBanco == null) {
+            throw new RuntimeException("❌ Cuenta bancaria no encontrada para el comercio con RUT: " + rutComercio);
+        }
+        List<Deposito> listaDepositos = cuentaBanco.getListaDepositos();
+        if (listaDepositos == null || listaDepositos.isEmpty()) {
+            throw new RuntimeException("❌ No hay depósitos registrados para el comercio con RUT: " + rutComercio);
+        }
+        DataFecha Inicio = parseFecha(fechaIni);
+        DataFecha Fin = parseFecha(fechaEnd);
+        // Filtrar los depósitos por rango de fecha
+        if (fechaIni == null || fechaEnd == null) {
+            throw new IllegalArgumentException("❌ Las fechas de inicio y fin no pueden ser nulas.");
+        }
+        List<Deposito> depositosFiltrados = repo.buscarPorRangoDeFecha(listaDepositos, Inicio, Fin);
+         
+        return depositosFiltrados;   
+    }
+    private DataFecha parseFecha(String fechaStr) {
+        // Acepta formato "dd-MM-yyyy"
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDate fecha = LocalDate.parse(fechaStr, formatter);
+        return new DataFecha(fecha.getDayOfMonth(), fecha.getMonthValue(), fecha.getYear());
     }
    
 }

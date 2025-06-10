@@ -29,22 +29,11 @@ public class ObservadorDeEventos implements ListenerEventosComercio {
         int nroCuenta = 10000 + (int)(Math.random() * 90000);
 
         cuenta.setNroCuenta(nroCuenta);
+        cuenta.setRutComercio(comercio.getRut()); // Asociar el RUT del comercio a la cuenta
         cuenta.setListaDepositos(new ArrayList<>());
 
-        // Crear nuevo comercio y asociarle la cuenta bancaria
-        org.taller.moduloDeTransferencia.dominio.Comercio nuevoComercio = new org.taller.moduloDeTransferencia.dominio.Comercio();
-        nuevoComercio.setRut(comercio.getRut());
-        nuevoComercio.setCuentaBancoComercio(cuenta);
-
-        // Asociar el comercio a la cuenta también (relación bidireccional si corresponde)
-        cuenta.setComercio(nuevoComercio);
         repo2.guardar(cuenta);
-        log.info("✔ Cuenta bancaria creada y asociada al comercio: " + comercio.getNombreComercio());
-
-        // Guardar el comercio (y posiblemente la cuenta si hay persistencia en cascada)
-        repo.guardar(nuevoComercio);
-
-        log.info("✔ Comercio y cuenta creados y asociados exitosamente");
+        System.out.println("Cuenta bancaria creada para el comercio: " + comercio.getNombreComercio() + " con número: " + nroCuenta);
     }
     @Override
     public void alModificarComercio(org.taller.moduloDeComercio.dominio.Comercio comercio) {

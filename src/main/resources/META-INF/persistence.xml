@@ -11,8 +11,10 @@
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
 
     <!-- Agregá tus clases de entidad aquí -->
-  <class>org.taller.moduloDeTransferencia.infraestructura.persistencia.CuentaBancoComercioMap</class>
-  <class>org.taller.moduloDeTransferencia.infraestructura.persistencia.DepositoMap</class>
+  <class>org.taller.moduloDeTransferencia.dominio.CuentaBancoComercio</class>
+  <class>org.taller.moduloDeTransferencia.dominio.Deposito</class>
+  <class>org.taller.moduloDeTransferencia.dominio.DataFecha</class>
+  
   <class>org.taller.moduloDeComercio.dominio.POS</class>
   <class>org.taller.moduloDeComercio.dominio.ReclamoComercio</class>
   <class>org.taller.moduloDeComercio.dominio.Comercio</class>
@@ -20,8 +22,6 @@
   <class>org.taller.moduloDeCompra.dominio.DataCompra</class>
   <class>org.taller.moduloDeCompra.dominio.DataTarjeta</class>
   
-  <class>org.taller.moduloDeTransferencia.dominio.DataFecha</class>
-
     <properties>
    
 

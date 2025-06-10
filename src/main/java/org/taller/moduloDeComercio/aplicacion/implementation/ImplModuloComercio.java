@@ -12,6 +12,7 @@ import org.taller.moduloDeComercio.dominio.DatosComercio;
 import org.taller.moduloDeComercio.dominio.POS;
 import org.taller.moduloDeComercio.dominio.ReclamoComercio;
 import org.taller.moduloDeComercio.interfase.eventos.ListenerEventosComercio;
+import org.taller.moduloDeComercio.interfase.eventos.RegistroListener;
 import org.taller.moduloDeComercio.repositorio.RepositorioComercio;
 import org.taller.moduloDeComercio.repositorio.RepositorioPOS;
 import org.taller.moduloDeComercio.repositorio.RepositorioReclamoComercio;
@@ -27,6 +28,10 @@ public class ImplModuloComercio implements InterfaceModuloComercio {
 
     @Inject
     private RepositorioPOS repositorioPOS;
+
+    @Inject
+    RegistroListener dummy;
+
 
     private final List<ListenerEventosComercio> listeners = new ArrayList<>();
 

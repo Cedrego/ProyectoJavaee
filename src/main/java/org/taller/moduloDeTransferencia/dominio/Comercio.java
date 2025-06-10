@@ -17,3 +17,4 @@ public class Comercio {
      private CuentaBancoComercio cuentaBancoComercio; // Cuenta bancaria asociada al comercio  
     
 }
+//A borrar la clase
