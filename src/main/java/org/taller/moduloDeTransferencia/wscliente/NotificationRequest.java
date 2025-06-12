@@ -1,9 +1,9 @@
 
 package org.taller.moduloDeTransferencia.wscliente;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlType;
 
 
 /**
@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlType;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
  *         &lt;element name="idCompra" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
- *         &lt;element name="rutComercio" type="{http://www.w3.org/2001/XMLSchema}int"/&gt;
+ *         &lt;element name="rutComercio" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *         &lt;element name="monto" type="{http://www.w3.org/2001/XMLSchema}float"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
@@ -36,7 +36,7 @@ import javax.xml.bind.annotation.XmlType;
 public class NotificationRequest {
 
     protected int idCompra;
-    protected int rutComercio;
+    protected String rutComercio;
     protected float monto;
 
     /**
@@ -58,16 +58,24 @@ public class NotificationRequest {
     /**
      * Gets the value of the rutComercio property.
      * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
      */
-    public int getRutComercio() {
+    public String getRutComercio() {
         return rutComercio;
     }
 
     /**
      * Sets the value of the rutComercio property.
      * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
      */
-    public void setRutComercio(int value) {
+    public void setRutComercio(String value) {
         this.rutComercio = value;
     }
 

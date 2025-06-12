@@ -107,4 +107,12 @@ public class ImplModuloComercio implements InterfaceModuloComercio {
         //podría guardar el reclamo o mostrar un mensaje, por ahora queda en consola
         System.out.println("Reclamo recibido del comercio " + idComercio + ": " + textoReclamo);
     }
+
+    //HAY QUE VER ESTO BIEN DESPUES, POR AHORA SOLO IMPRIME UN MENSAJE
+    @Override 
+    public void realizarPago(DatosComercio datos) {
+        // Implementar lógica de pago aquí
+        // Por ahora, solo se imprime un mensaje
+        System.out.println("Realizando pago para el comercio: " + datos.getId());
+    }
 }

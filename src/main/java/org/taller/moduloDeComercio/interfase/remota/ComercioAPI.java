@@ -1,8 +1,11 @@
 package org.taller.moduloDeComercio.interfase.remota;
 
+import java.util.concurrent.TimeUnit;
+
 import org.jboss.logging.Logger;
 import org.taller.moduloDeComercio.aplicacion.InterfaceModuloComercio;
 import org.taller.moduloDeComercio.dominio.DatosComercio;
+import org.taller.moduloDeComercio.rateLimiter.RateLimiter;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -14,6 +17,7 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
 @ApplicationScoped
 @Path("/comercio")
@@ -21,6 +25,8 @@ import jakarta.ws.rs.core.MediaType;
 @Produces(MediaType.APPLICATION_JSON)
 public class ComercioAPI {
     private static final Logger log = Logger.getLogger(ComercioAPI.class);
+
+    private static final RateLimiter rateLimiter = new RateLimiter(TimeUnit.SECONDS.toMillis(1)); // Limitar a 1 solicitud por segundo por comercio
 
     @Inject
     private InterfaceModuloComercio servicio;
@@ -81,5 +87,20 @@ public class ComercioAPI {
         log.infof("Reclamo de %s : %s", id, texto);
         servicio.realizarReclamo(id, texto);
         return "OK";
+    }
+
+    // curl -X POST "http://localhost:8080/proyecto-javaee/remota/comercio/123/realizar-pago" -H "Content-Type: application/json" -d '{"id":"123","nombre":"MiTienda","direccion":"C/Falsa","telefono":"0999","email":"a@b.com","contraseniaHash":"pass", "listaPOS":[]}'
+    @POST
+    @Path("{id}/realizar-pago")
+    public Response realizarPago(@PathParam("id") String id, ComercioDTO dto) {
+        if (!rateLimiter.allowRequest(id)) {
+            log.warnf("Rate limit exceeded for comercio %s", id);
+            return Response.status(Response.Status.TOO_MANY_REQUESTS).entity("Rate limit exceeded").build();
+        }
+
+        log.infof("Procesar pago para comercio: %s", id);
+        DatosComercio datos = dto.toDatosComercio();
+        servicio.realizarPago(datos);
+        return Response.ok("Pago procesado").build();
     }
 }

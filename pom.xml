@@ -15,6 +15,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <wsdl.url>http://localhost:8080/BancoClienteMock/BancoClienteService?wsdl</wsdl.url>
   </properties>
 
   <dependencies>
@@ -168,11 +169,34 @@
       <scope>provided</scope>
     </dependency>
     
+    <dependency>
+    <groupId>jakarta.annotation</groupId>
+    <artifactId>jakarta.annotation-api</artifactId>
+    <version>2.1.1</version>
+    <scope>provided</scope>
+  </dependency>
+
+    <!-- Jakarta XML Web Services API (JAX-WS) -->
+  <dependency>
+    <groupId>jakarta.xml.ws</groupId>
+    <artifactId>jakarta.xml.ws-api</artifactId>
+    <version>3.0.1</version>
+    <scope>provided</scope>
+  </dependency>
+
+  <!-- Jakarta XML Web Services Annotations (JAX-WS @WebService, @WebMethod) -->
+  <dependency>
+    <groupId>jakarta.jws</groupId>
+    <artifactId>jakarta.jws-api</artifactId>
+    <version>3.0.0</version>
+    <scope>provided</scope>
+  </dependency>
+
   </dependencies>
 
   <build>
     <finalName>ProyectoJavaee</finalName>  <!-- Nombre del WAR -->
-
+  
     <pluginManagement>
       <plugins>
         <!-- Tus plugins actuales -->
@@ -237,6 +261,61 @@
     </pluginManagement>
 
     <plugins>
+  <!-- CXF CodeGen Plugin para WSDL → clases Jakarta -->
+    <plugin>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-codegen-plugin</artifactId>
+      <version>4.0.0</version>
+      <executions>
+        <execution>
+          <id>generate-wsdl-stubs</id>
+          <phase>generate-sources</phase>
+          <goals>
+            <goal>wsdl2java</goal>
+          </goals>
+          <configuration>
+            <!-- URL de tu WSDL -->
+            <wsdlOptions>
+              <wsdlOption>
+                <wsdl>${wsdl.url}</wsdl>
+                <!-- GENERA código Jakarta sin extra frontends conflictivos -->
+                <!-- No hace falta extraarg para frontend ni target -->
+                <packagenames>org.taller.moduloDeTransferencia.wscliente</packagenames>
+                <outputDir>${project.build.directory}/generated-sources/cxf</outputDir>
+                <!-- Indica que use Jakarta EE 9+ -->
+                <bindingFiles>
+                  <!-- Podrías apuntar a un binding si necesitas ajustes -->
+                </bindingFiles>
+              </wsdlOption>
+            </wsdlOptions>
+            <!-- Asegúrate de que CXF 4 use Jakarta EE APIs -->
+            <dataBindingName>jaxb</dataBindingName>
+          </configuration>
+        </execution>
+      </executions>
+    </plugin>
+
+    <!-- Build Helper para que Maven compile lo generado -->
+    <plugin>
+      <groupId>org.codehaus.mojo</groupId>
+      <artifactId>build-helper-maven-plugin</artifactId>
+      <version>3.4.0</version>
+      <executions>
+        <execution>
+          <id>add-generated-sources</id>
+          <phase>generate-sources</phase>
+          <goals>
+            <goal>add-source</goal>
+          </goals>
+          <configuration>
+            <sources>
+              <source>${project.build.directory}/generated-sources/cxf</source>
+            </sources>
+          </configuration>
+        </execution>
+      </executions>
+    </plugin>
+
       <!-- WAR Plugin actualizado para Java 21 -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

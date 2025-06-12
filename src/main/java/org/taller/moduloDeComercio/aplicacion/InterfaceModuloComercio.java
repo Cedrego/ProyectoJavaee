@@ -23,4 +23,5 @@ public interface InterfaceModuloComercio {
     //recibe un reclamo del comercio, el cual deberá ser atendido por el departamento de Soporte.
     abstract void realizarReclamo(String rutComercio, String textoReclamo);
 
+    abstract void realizarPago(DatosComercio datos);
 }
