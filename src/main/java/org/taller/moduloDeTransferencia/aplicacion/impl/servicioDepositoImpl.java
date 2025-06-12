@@ -14,6 +14,10 @@ import org.taller.moduloDeTransferencia.dominio.DataFecha;
 import org.taller.moduloDeTransferencia.dominio.Deposito;
 import org.taller.moduloDeTransferencia.dominio.repositorio.cuentaRepo;
 import org.taller.moduloDeTransferencia.dominio.repositorio.depositoRepo;
+import org.taller.moduloDeTransferencia.wscliente.BancoClienteService;
+import org.taller.moduloDeTransferencia.wscliente.BancoClienteService_Service;
+import org.taller.moduloDeTransferencia.wscliente.ConfirmationResponse;
+import org.taller.moduloDeTransferencia.wscliente.NotificationRequest;
 
 @ApplicationScoped
 public class servicioDepositoImpl implements servicioDeposito {
@@ -58,6 +62,30 @@ public class servicioDepositoImpl implements servicioDeposito {
         repo.guardar(deposito);
         cuentaBanco.addDeposito(deposito); // Agregar el depósito a la cuenta
         repo2.Actualizar(cuentaBanco); // Guardar la cuenta actualizada
+        notificarAlBanco(idCompra, rutComercio, montoNeto);
+    }
+
+    public void notificarAlBanco(int idCompra, String rutComercio, float monto) {
+        try {
+            // Crear el cliente del servicio
+            BancoClienteService_Service service = new BancoClienteService_Service();
+            BancoClienteService port = service.getBancoClientePort();
+
+            // Armar el request
+            NotificationRequest request = new NotificationRequest();
+            request.setIdCompra(idCompra);
+            request.setRutComercio(rutComercio);
+            request.setMonto(monto);
+
+            // Invocar la operación
+            ConfirmationResponse response = port.notificarTransferencia(request);
+
+            // Manejar respuesta
+            System.out.println("Respuesta del banco: " + response); // Mejor si imprimís algún campo
+        } catch (Exception e) {
+            System.err.println("Error al notificar transferencia al banco:");
+            e.printStackTrace();
+        }
     }
     
     @Override
