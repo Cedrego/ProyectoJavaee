@@ -1,39 +1,52 @@
 package org.taller.moduloDeMonitoreo.aplicacion;
 
-import org.taller.moduloDeMonitoreo.dominio.eventos.EventoPago;
-import org.taller.moduloDeMonitoreo.infraestructura.eventos.BusDeEventos;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.taller.moduloDeMonitoreo.dominio.ServicioMonitoreo;
+import org.taller.moduloDeMonitoreo.infraestructura.eventos.BusDeEventos;
+import org.taller.moduloDeMonitoreo.infraestructura.metrics.PrometheusMetricsServlet; // solo si usás Prometheus
+
 
 public class ServicioMonitoreoImpl implements ServicioMonitoreo {
 
     private final BusDeEventos bus;
+    private final Counter pagosOkCounter;
+    private final Counter pagosErrorCounter;
+    private final Counter pagoCounter;
+    private final Counter transferenciaCounter;
+    private final Counter reclamoCounter;
 
-    public ServicioMonitoreoImpl(BusDeEventos bus) {
+    public ServicioMonitoreoImpl(BusDeEventos bus, MeterRegistry registry) {
         this.bus = bus;
+        this.pagosOkCounter = registry.counter("pagos_ok");
+        this.pagosErrorCounter = registry.counter("pagos_error");
+        this.pagoCounter = registry.counter("pagos");
+        this.transferenciaCounter = registry.counter("transferencias");
+        this.reclamoCounter = registry.counter("reclamos");
     }
 
     @Override
     public void notificarPago() {
-        bus.publicar(new EventoPago("PAGO", "Se realizó un pago"));
+        pagoCounter.increment();
     }
 
     @Override
     public void notificarPagoOk() {
-        bus.publicar(new EventoPago("PAGO_OK", "Pago exitoso"));
+        pagosOkCounter.increment();
     }
 
     @Override
     public void notificarPagoError() {
-        bus.publicar(new EventoPago("PAGO_ERROR", "Pago rechazado"));
+        pagosErrorCounter.increment();
     }
 
     @Override
     public void notificarTransferencia() {
-        bus.publicar(new EventoPago("TRANSFERENCIA", "Se realizó una transferencia"));
+        transferenciaCounter.increment();
     }
 
     @Override
     public void notificarReclamoComercio() {
-        bus.publicar(new EventoPago("RECLAMO", "Reclamo del comercio recibido"));
+        reclamoCounter.increment();
     }
 }

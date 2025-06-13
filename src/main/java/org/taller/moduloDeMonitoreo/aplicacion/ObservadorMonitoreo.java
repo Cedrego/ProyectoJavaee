@@ -14,6 +14,8 @@ public class ObservadorMonitoreo implements ObservadorDeEventos {
 
     @Override
     public void manejar(Evento evento) {
+        System.out.println("ObservadorMonitoreo recibió: " + evento.tipo());
         repositorio.guardarEvento(evento.tipo(), evento.mensaje());
     }
+
 }
