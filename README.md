@@ -2,17 +2,14 @@
 modulo de monitoreo pronto solo faltan los tests
 estan pronto los test
 brebe explicacion de como funciona modulo de monitoreo
+public class Main {
 
-// 1. Crear el bus de eventos
+    public static void main(String[] args) {
+        // 1. Crear el bus de eventos
         BusDeEventos bus = new BusDeEventos();
 
         // 2. Crear el repositorio (acá usamos uno de consola como ejemplo)
-        RepositorioEventos repositorio = new RepositorioEventos() {
-            @Override
-            public void guardarEvento(String tipo, String mensaje) {
-                System.out.println("📌 Evento registrado -> Tipo: " + tipo + ", Mensaje: " + mensaje);
-            }
-        };
+       RepositorioEventos repositorio = new RepositorioEventosConsola();
 
         // 3. Registrar el observador de monitoreo
         ObservadorMonitoreo observador = new ObservadorMonitoreo(repositorio);
@@ -27,6 +24,9 @@ brebe explicacion de como funciona modulo de monitoreo
         servicio.notificarPagoError();
         servicio.notificarTransferencia();
         servicio.notificarReclamoComercio();
+    }
+}
+
 
 Modulo de Transferencia
 Primero creamos las clases en la carpeta de dominio, las cuales son, comercio, Cuenta Banco Comercio
