@@ -27,6 +27,9 @@ public class servicioDepositoImpl implements servicioDeposito {
     @Inject
     private  cuentaRepo repo2; // repositorio en memoria
     
+    @Inject
+    private BancoClienteService_Service service; // Cliente del servicio web del banco
+    
     @PersistenceContext
     private EntityManager em;
     
@@ -67,8 +70,7 @@ public class servicioDepositoImpl implements servicioDeposito {
 
     public void notificarAlBanco(int idCompra, String rutComercio, float monto) {
         try {
-            // Crear el cliente del servicio
-            BancoClienteService_Service service = new BancoClienteService_Service();
+            // Crear el cliente del servicio web del banco
             BancoClienteService port = service.getBancoClientePort();
 
             // Armar el request
