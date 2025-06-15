@@ -8,6 +8,7 @@ import org.taller.moduloDeCompra.aplicacion.ModuloCompras;
 import org.taller.moduloDeCompra.dominio.Comercio;
 import org.taller.moduloDeCompra.dominio.DataCompra;
 import org.taller.moduloDeCompra.dominio.DataFecha;
+import org.taller.moduloDeCompra.infraestructura.RateLimiter;
 import org.taller.moduloDeCompra.persistencia.ComercioService;
 import org.taller.moduloDeCompra.persistencia.CompraService;
 
@@ -19,9 +20,15 @@ public class ModuloComprasImpl implements ModuloCompras {
     ComercioService comercioService;
     @Inject
     CompraService compraService;
+    @Inject
+    RateLimiter rateLimiter;
 
     @Override
     public void procesarPago(DataCompra datosCompra) {
+        if (rateLimiter.isActivo() && !rateLimiter.consumir()) {
+            throw new IllegalStateException("Rate limit exceeded. Try again later.");
+        }
+
         int monto = Math.round(datosCompra.getImporte());
         enviarTransaccion(monto, datosCompra);
 

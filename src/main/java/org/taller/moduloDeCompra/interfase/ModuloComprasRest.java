@@ -1,3 +1,4 @@
+package org.taller.moduloDeCompra.interfase;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
