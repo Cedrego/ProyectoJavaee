@@ -1,5 +1,8 @@
 package org.taller.moduloDeCompra.interfase;
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/Enzo
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -8,7 +11,7 @@ import jakarta.ws.rs.core.Response;
 import org.taller.moduloDeCompra.aplicacion.Impl.ModuloComprasImpl;
 import org.taller.moduloDeCompra.dominio.DataCompra;
 
-@Path("/api/compras")
+@Path("/compras")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class ModuloComprasRest {
@@ -18,7 +21,7 @@ public class ModuloComprasRest {
 
     @GET
     @Path("/resumen-diario")
-    public Response resumenVentasDiarias(@QueryParam("idcomercio") Integer idComercio) {
+    public Response resumenVentasDiarias(@QueryParam("idcomercio") String idComercio) {
         try {
             return Response.ok(moduloCompras.resumenVentasDiarias(idComercio)).build();
         } catch (IllegalArgumentException e) {
@@ -28,14 +31,14 @@ public class ModuloComprasRest {
         }
     }
     /*
-     curl -X GET "http://localhost:8080/ProyectoJavaee/api/compras/resumen-diario?idcomercio=101" \
+     curl -X GET "http://localhost:8080/ProyectoJavaee/api/compras/resumen-diario?idcomercio=123" \
   -H "Accept: application/json"
 
      */
 
     @GET
     @Path("/resumen-Ventas-Periodo")
-    public Response resumenVentasPorPeriodo(@QueryParam("idcomercio") Integer idComercio,
+    public Response resumenVentasPorPeriodo(@QueryParam("idcomercio") String idComercio,
                                             @QueryParam("fechaini") String fechaIni,
                                             @QueryParam("fechaend") String fechaEnd) {
         try {
@@ -45,14 +48,14 @@ public class ModuloComprasRest {
         }
     }
 /*
-  curl -X GET "http://localhost:8080/ProyectoJavaee/api/compras/resumen-Ventas-Periodo?idcomercio=101&fechaini=01-05-2025&fechaend=20-05-2025" \
+  curl -X GET "http://localhost:8080/ProyectoJavaee/api/compras/resumen-Ventas-Periodo?idcomercio=123&fechaini=01-05-2025&fechaend=20-05-2025" \
   -H "Accept: application/json"
 
  */
 
     @GET
     @Path("/monto-actual-vendido")
-    public Response montoActualVendido(@QueryParam("idcomercio") Integer idComercio) {
+    public Response montoActualVendido(@QueryParam("idcomercio") String idComercio) {
         try {
             String json = String.valueOf(moduloCompras.montoActualVendido(idComercio));
             return Response.ok(json).build();
@@ -63,7 +66,7 @@ public class ModuloComprasRest {
         }
     }
 /*
-curl -X GET "http://localhost:8080/ProyectoJavaee/api/compras/monto-actual-vendido?idcomercio=101" \
+curl -X GET "http://localhost:8080/ProyectoJavaee/api/compras/monto-actual-vendido?idcomercio=123" \
   -H "Accept: application/json"
  */
 
@@ -81,14 +84,16 @@ curl -X GET "http://localhost:8080/ProyectoJavaee/api/compras/monto-actual-vendi
     curl -X POST http://localhost:8080/ProyectoJavaee/api/compras/procesar-pago \
   -H "Content-Type: application/json" \
   -d '{
-        "id": 1,
         "importe": 1000.0,
-        "fecha": { "dia": 21, "mes": 5, "anio": 2025 },
-        "desc": "Pago de producto",
+        "fecha": null,
+        "descripcion": "Pago de producto",
         "tarjeta": {
-            "nro": "1234567890123456",
-            "marca": "VISA"
-        }
+            "nro": "12345",
+            "marca": "VISA",
+            "fechaVto": { "dia": 30, "mes": 12, "anio": 2025 }
+        },
+            "idPos": 1,
+            "rutComercio": 123
       }'
 */
 }

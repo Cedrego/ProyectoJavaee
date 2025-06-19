@@ -1,4 +1,4 @@
-package org.taller.moduloDeComercio.dominio;
+package org.taller.moduloDeComercio.infraestructura.persistencia;
 
 import jakarta.persistence.*;
 import java.util.ArrayList;
@@ -6,8 +6,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "COMERCIO")
-public class Comercio {
-     @Id
+public class ComercioMap {
+
+    @Id
     private String rutComercio;
 
     private String nombreComercio;
@@ -16,92 +17,85 @@ public class Comercio {
     private String mailComercio;
     private String contraComercio;
 
-    @OneToMany(mappedBy = "comercio", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<POS> listaPOS = new ArrayList<>();
+    @OneToMany(mappedBy = "comercio", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<POSMap> listaPOS = new ArrayList<>();
 
-    public Comercio() {}
-    //constructor completo
-    public Comercio(String rut, String nombre, String direccion, String telefono, String mail, String contra) {
+    public ComercioMap() {}
+
+    public ComercioMap(String rut, String nombre, String direccion, String telefono, String mail, String contra) {
         this.rutComercio = rut;
         this.nombreComercio = nombre;
         this.direccionComercio = direccion;
         this.telefonoComercio = telefono;
         this.mailComercio = mail;
         this.contraComercio = contra;
-        this.listaPOS = new ArrayList<>();
     }
 
-
-    //getters
     public String getRut() {
         return rutComercio;
+    }
+
+    public void setRut(String rut) {
+        this.rutComercio = rut;
     }
 
     public String getNombreComercio() {
         return nombreComercio;
     }
 
-    public String getDireccionComercio() {
-        return direccionComercio;
-    }
-
-    public String getTelefonoComercio() {
-        return telefonoComercio;
-    }
-
-    public String getMailComercio() {
-        return mailComercio;
-    }
-
-    public String getContraComercio() {
-        return contraComercio;
-    }
-
-    public List<POS> getPos() {
-        return listaPOS;
-    }
-
-    //setters
-    public void setRut(String rut) {
-        this.rutComercio = rut;
-    }
-
     public void setNombreComercio(String nombre) {
         this.nombreComercio = nombre;
+    }
+
+    public String getDireccionComercio() {
+        return direccionComercio;
     }
 
     public void setDireccionComercio(String direccion) {
         this.direccionComercio = direccion;
     }
 
+    public String getTelefonoComercio() {
+        return telefonoComercio;
+    }
+
     public void setTelefonoComercio(String telefono) {
         this.telefonoComercio = telefono;
+    }
+
+    public String getMailComercio() {
+        return mailComercio;
     }
 
     public void setMailComercio(String mail) {
         this.mailComercio = mail;
     }
 
+    public String getContraComercio() {
+        return contraComercio;
+    }
+
     public void setContraComercio(String contra) {
         this.contraComercio = contra;
     }
 
-    public void setPos(List<POS> pos) {
+    public List<POSMap> getPos() {
+        return listaPOS;
+    }
+
+    public void setPos(List<POSMap> pos) {
         this.listaPOS = pos;
     }
 
-    
-    //operacion para agregar la id de un POS a la lista del comercio
-    public void agregarPOS(POS pos) {
+    public void agregarPOS(POSMap pos) {
         this.listaPOS.add(pos);
+        pos.setComercio(this);
     }
 
-    //operacion para buscar el POS por su id
-    public POS buscarPOSPorId(int idPOS) {
-        for (POS pos : listaPOS) {
-            if (pos.getIdPOS() == idPOS) return pos;
+    public POSMap buscarPOSPorId(int id) {
+        for (POSMap pos : listaPOS) {
+            if (pos.getIdPOS() == id) return pos;
         }
         return null;
     }
-  
 }

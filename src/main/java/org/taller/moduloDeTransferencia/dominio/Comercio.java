@@ -11,6 +11,10 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "TRANSFERENCIA_COMERCIO")
 public class Comercio {
-    @Id
-    int rut;
+     @Id
+     private String rut;
+     @OneToOne(mappedBy = "comercio", cascade = CascadeType.ALL)
+     private CuentaBancoComercio cuentaBancoComercio; // Cuenta bancaria asociada al comercio  
+    
 }
+//A borrar la clase

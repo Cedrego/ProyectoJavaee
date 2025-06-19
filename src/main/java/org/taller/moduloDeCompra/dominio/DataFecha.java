@@ -1,7 +1,11 @@
 package org.taller.moduloDeCompra.dominio;
 import java.time.LocalDate;
 import jakarta.json.bind.annotation.JsonbProperty;
+import jakarta.persistence.Embeddable;
+import lombok.Data;
+@Data
 
+@Embeddable
 public class DataFecha {
     @JsonbProperty("dia")
     public int dia;
@@ -36,5 +40,12 @@ public class DataFecha {
         if (!(o instanceof DataFecha)) return false;
         DataFecha f = (DataFecha) o;
         return this.dia == f.dia && this.mes == f.mes && this.anio == f.anio;
+    }
+    @Override
+    public int hashCode() {
+        int result = Integer.hashCode(dia);
+        result = 31 * result + Integer.hashCode(mes);
+        result = 31 * result + Integer.hashCode(anio);
+        return result;
     }
 }

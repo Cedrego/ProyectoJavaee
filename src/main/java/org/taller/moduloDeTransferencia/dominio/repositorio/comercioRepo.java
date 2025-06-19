@@ -15,10 +15,11 @@ public class comercioRepo {
         return new ArrayList<>(comercios); // Copia defensiva
     }
 
-    public Comercio buscarPorRut(int rut) {
-        return comercios.stream()
-                .filter(c -> c.getRut() == rut)
-                .findFirst()
-                .orElse(null);
+   public Comercio buscarPorRut(String rut) {
+    return comercios.stream()
+            .filter(c -> c.getRut().equals(rut))
+            .findFirst()
+            .orElse(null);
     }
+
 }

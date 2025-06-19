@@ -1,14 +1,16 @@
 package org.taller.moduloDeCompra.dominio;
 import jakarta.json.bind.annotation.JsonbProperty;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 
-
+@Entity
+@Table(name = "COMPRA")
 public class DataCompra {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonbProperty("id")
     public Integer id;
 
@@ -18,17 +20,24 @@ public class DataCompra {
     @JsonbProperty("fecha")
     public DataFecha fecha;
 
-    @JsonbProperty("desc")
-    public String desc;
+    @JsonbProperty("descripcion")
+    public String descripcion;
 
+    @ManyToOne
+    @JoinColumn(name = "tarjeta_nro")
     @JsonbProperty("tarjeta")
     public DataTarjeta tarjeta;
 
-    DataCompra(Integer id){
-        this.id=id;
+    @JsonbProperty("idPos")
+    public Integer idPos;
+
+    @JsonbProperty("rutComercio")
+    public String rutComercio;
+
+    public DataCompra(){
         this.importe=0;
         this.fecha=null;
-        this.desc=null;
+        this.descripcion=null;
         this.tarjeta=null;
     }
 
@@ -49,12 +58,6 @@ public class DataCompra {
     }
     public void setFecha(DataFecha fecha) {
         this.fecha = fecha;
-    }
-    public String getDesc() {
-        return desc;
-    }
-    public void setDesc(String desc) {
-        this.desc = desc;
     }
     public DataTarjeta getTarjeta() {
         return tarjeta;

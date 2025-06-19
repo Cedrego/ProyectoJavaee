@@ -1,12 +1,24 @@
 package org.taller.moduloDeComercio.interfase.remota;
 
+<<<<<<< HEAD
 import org.jboss.logging.Logger;
 import org.taller.moduloDeComercio.aplicacion.InterfaceModuloComercio;
 import org.taller.moduloDeComercio.dominio.DatosComercio;
+=======
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import org.jboss.logging.Logger;
+import org.taller.moduloDeComercio.aplicacion.InterfaceModuloComercio;
+import org.taller.moduloDeComercio.dominio.DatosComercio;
+import org.taller.moduloDeComercio.dominio.POS;
+import org.taller.moduloDeComercio.rateLimiter.RateLimiter;
+>>>>>>> origin/Enzo
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
@@ -25,7 +37,7 @@ public class ComercioAPI {
     @Inject
     private InterfaceModuloComercio servicio;
 
-    // curl -X POST http://localhost:8080/proyecto-javaee/remota/comercio -H "Content-Type: application/json" -d '{"id":"123","nombre":"MiTienda","direccion":"C/Falsa","telefono":"0999","email":"a@b.com","contraseniaHash":"pass", "listaPOS":[]}'
+    // curl -X POST http://localhost:8080/ProyectoJavaee/remota/comercio -H "Content-Type: application/json" -d '{"id":"123","nombre":"MiTienda","direccion":"C/Falsa","telefono":"0999","email":"a@b.com","contraseniaHash":"pass", "listaPOS":[]}'
     @POST
     public String altaComercio(ComercioDTO dto) {
         log.infof("Alta comercio: %s", dto);
@@ -34,7 +46,7 @@ public class ComercioAPI {
         return "OK";
     }
 
-    // curl -X PUT http://localhost:8080/proyecto-javaee/remota/comercio -H "Content-Type: application/json" -d '{"id":"123","nombre":"Otro","direccion":"Av","telefono":"0999","email":"x@y.com","contraseniaHash":"pass", "listaPOS":[]}'
+    // curl -X PUT http://localhost:8080/ProyectoJavaee/remota/comercio -H "Content-Type: application/json" -d '{"id":"123","nombre":"Otro","direccion":"Av","telefono":"0999","email":"x@y.com","contraseniaHash":"pass", "listaPOS":[]}'
     @PUT
     public String modificarComercio(ComercioDTO dto) {
         log.infof("Modifica comercio: %s", dto);
@@ -43,16 +55,16 @@ public class ComercioAPI {
         return "OK";
     }
 
-    // curl -X POST http://localhost:8080/proyecto-javaee/remota/comercio/123/pos/1
+    // curl -X POST http://localhost:8080/ProyectoJavaee/remota/comercio/123/pos
     @POST
-    @Path("{id}/pos/{idPos}")
-    public String altaPos(@PathParam("id") String id, @PathParam("idPos") int idPos) {
-        log.infof("Alta POS %d a comercio %s", idPos, id);
-        servicio.altaPos(id, idPos);
+    @Path("{id}/pos")
+    public String altaPos(@PathParam("id") String id) {
+        log.infof("Alta POS para comercio %s", id);
+        servicio.altaPos(id);
         return "OK";
     }
 
-    // curl -X PUT "http://localhost:8080/proyecto-javaee/remota/comercio/123/pos/1/estado?habilitado=true"
+    // curl -X PUT "http://localhost:8080/ProyectoJavaee/remota/comercio/123/pos/1/estado?habilitado=true"
     @PUT
     @Path("{id}/pos/{idPos}/estado")
     public String cambiarEstado(@PathParam("id") String id,
@@ -63,7 +75,7 @@ public class ComercioAPI {
         return "OK";
     }
 
-    // curl -X PUT "http://localhost:8080/proyecto-javaee/remota/comercio/123/contrasenia?nuevaContrasenia=nueva"
+    // curl -X PUT "http://localhost:8080/ProyectoJavaee/remota/comercio/123/contrasenia?nuevaContrasenia=nueva"
     @PUT
     @Path("{id}/contrasenia")
     public String cambioContrasenia(@PathParam("id") String id,
@@ -73,7 +85,7 @@ public class ComercioAPI {
         return "OK";
     }
 
-    // curl -X POST "http://localhost:8080/proyecto-javaee/remota/comercio/123/reclamo?texto=Problema"
+    // curl -X POST "http://localhost:8080/ProyectoJavaee/remota/comercio/123/reclamo?texto=Problema"
     @POST
     @Path("{id}/reclamo")
     public String reclamo(@PathParam("id") String id,
@@ -82,4 +94,31 @@ public class ComercioAPI {
         servicio.realizarReclamo(id, texto);
         return "OK";
     }
+<<<<<<< HEAD
 }
+=======
+
+    // curl -X GET "http://localhost:8080/ProyectoJavaee/remota/comercio/123/pos"
+    @GET
+    @Path("{id}/pos")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<POS> listarPOS(@PathParam("id") String id) {
+        log.infof("Listar POS para comercio %s", id);
+        return servicio.listarPOS(id);
+    }
+    // curl -X POST "http://localhost:8080/proyecto-javaee/remota/comercio/123/realizar-pago" -H "Content-Type: application/json" -d '{"id":"123","nombre":"MiTienda","direccion":"C/Falsa","telefono":"0999","email":"a@b.com","contraseniaHash":"pass", "listaPOS":[]}'
+    @POST
+    @Path("{id}/realizar-pago")
+    public Response realizarPago(@PathParam("id") String id, ComercioDTO dto) {
+        if (!rateLimiter.allowRequest(id)) {
+            log.warnf("Rate limit exceeded for comercio %s", id);
+            return Response.status(Response.Status.TOO_MANY_REQUESTS).entity("Rate limit exceeded").build();
+        }
+
+        log.infof("Procesar pago para comercio: %s", id);
+        DatosComercio datos = dto.toDatosComercio();
+        servicio.realizarPago(datos);
+        return Response.ok("Pago procesado").build();
+    }
+}
+>>>>>>> origin/Enzo
