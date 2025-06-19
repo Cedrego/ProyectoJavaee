@@ -16,7 +16,7 @@ public class DataTarjeta implements java.io.Serializable {
    
     @Id
     @JsonbProperty("nro")
-    public Integer nro;
+    public String nro;
 
     @JsonbProperty("marca")
     public String marca;

@@ -7,8 +7,11 @@ import java.util.stream.Collectors;
 import org.taller.moduloDeCompra.aplicacion.ModuloCompras;
 import org.taller.moduloDeCompra.dominio.DataCompra;
 import org.taller.moduloDeCompra.dominio.DataFecha;
-import org.taller.moduloDeCompra.infraestructura.RateLimiter;
 import org.taller.moduloDeCompra.dominio.DataTarjeta;
+import org.taller.moduloDeCompra.infraestructura.MedioPagoClient;
+import org.taller.moduloDeCompra.infraestructura.PagoRequest;
+import org.taller.moduloDeCompra.infraestructura.PagoResponse;
+import org.taller.moduloDeCompra.infraestructura.RateLimiter;
 import org.taller.moduloDeCompra.persistencia.ComercioService;
 import org.taller.moduloDeCompra.persistencia.CompraService;
 import org.taller.moduloDeCompra.persistencia.TarjetaService;
@@ -29,32 +32,61 @@ public class ModuloComprasImpl implements ModuloCompras {
     private TarjetaService tarjetaservice;
 
     @Override
-    public void procesarPago(DataCompra datosCompra) {
-        if (rateLimiter.isActivo() && !rateLimiter.consumir()) {
-            throw new IllegalStateException("Rate limit exceeded. Try again later.");
-        }
+public void procesarPago(DataCompra datosCompra) {
+    // Verificar el RateLimiter
+    if (rateLimiter.isActivo() && !rateLimiter.consumir()) {
+        throw new IllegalStateException("Rate limit exceeded. Try again later.");
+    }
 
-        int monto = Math.round(datosCompra.getImporte());
-        enviarTransaccion(monto, datosCompra);
+    // Validar que la tarjeta esté presente
+    if (datosCompra.getTarjeta() == null || datosCompra.getTarjeta().getNro() == null) {
+        throw new IllegalArgumentException("La tarjeta asociada a la compra no puede ser nula.");
+    }
 
+    // Crear el cliente REST para el medio de pago
+    MedioPagoClient medioPagoClient = new MedioPagoClient();
+    PagoRequest request = new PagoRequest(datosCompra.getTarjeta().getNro(), datosCompra.getImporte());
+
+    try {
+        // Enviar la transacción (registro del evento)
+        enviarTransaccion(datosCompra.getImporte(), datosCompra);
+
+        // Enviar la solicitud al medio de pago
+        PagoResponse response = medioPagoClient.procesarPago(request);
+
+        // Esperar respuesta (simulación o registro del evento)
         String respuesta = esperarRespuesta();
-        if (respuesta.startsWith("OK")) {
+        System.out.println("Respuesta recibida: " + respuesta);
+
+        if (response.autorizado) {
+            // Pago autorizado
+            System.out.println("✅ Pago autorizado: " + response.codigo);
             notificarPagoOk();
-            // En tu método procesarPago:
+
+            // Persistir la tarjeta si no existe
             DataTarjeta tarjetaPersistida = tarjetaservice.guardarSiNoExiste(datosCompra.getTarjeta());
             datosCompra.setTarjeta(tarjetaPersistida);
+
+            // Asignar la fecha actual a la compra
             DataFecha fechaHoy = DataFecha.hoy();
             datosCompra.setFecha(fechaHoy);
 
-            //Persistir la compra
+            // Persistir la compra
             compraService.guardar(datosCompra);
-            System.out.println("Despues de guardar compra" );
+            System.out.println("✅ Compra guardada exitosamente: " + datosCompra);
         } else {
+            // Pago rechazado
+            System.out.println("❌ Pago rechazado: " + response.codigo);
             notificarPagoError();
         }
+    } catch (RuntimeException e) {
+        // Manejar errores de comunicación con el medio de pago
+        System.err.println("❌ Error al procesar el pago: " + e.getMessage());
+        notificarPagoError();
     }
+}
 
-    private void enviarTransaccion(Integer monto, DataCompra datos) {
+    private void enviarTransaccion(Float monto, DataCompra datos) {
         System.out.println("Evento: enviarTransaccion(" + monto + ", " + datos + ")");
     }
 

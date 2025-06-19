@@ -1,8 +1,5 @@
 package org.taller.moduloDeCompra.interfase;
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/Enzo
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;

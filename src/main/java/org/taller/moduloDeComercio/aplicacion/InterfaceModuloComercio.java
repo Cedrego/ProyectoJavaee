@@ -28,6 +28,4 @@ public interface InterfaceModuloComercio {
     
     //devuelve una lista de POS asociados a un comercio
     abstract List<POS> listarPOS(String rutComercio);
-
-    abstract void realizarPago(DatosComercio datos);
 }

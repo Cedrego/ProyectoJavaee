@@ -146,11 +146,4 @@ public class ImplModuloComercio implements InterfaceModuloComercio {
         if (comercio == null) throw new RuntimeException("Comercio no encontrado");
         return comercio.getPos(); // Retorna la lista de POS del comercio
     }
-    //HAY QUE VER ESTO BIEN DESPUES, POR AHORA SOLO IMPRIME UN MENSAJE
-    @Override 
-    public void realizarPago(DatosComercio datos) {
-        // Implementar lógica de pago aquí
-        // Por ahora, solo se imprime un mensaje
-        System.out.println("Realizando pago para el comercio: " + datos.getId());
-    }
 }
