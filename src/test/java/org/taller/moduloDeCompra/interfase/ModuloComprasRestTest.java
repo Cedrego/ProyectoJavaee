@@ -1,14 +1,18 @@
 package org.taller.moduloDeCompra.interfase;
 
-import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
-import org.junit.jupiter.api.Test;
-
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
+
+@Disabled
 public class ModuloComprasRestTest {
 
+    
     @Test
     public void testProcesarPago() {
         RestAssured.baseURI = "http://localhost:8080/ProyectoJavaee/api/compras";

@@ -1,0 +1,99 @@
+{
+    "title": "Micrometer - Métricas del sistema",
+    "timezone": "browser",
+    "schemaVersion": 30,
+    "version": 1,
+    "refresh": "10s",
+    "panels": [
+      {
+        "type": "graph",
+        "title": "Pagos (OK / Error)",
+        "id": 1,
+        "datasource": "InfluxDB",
+        "targets": [
+          {
+            "refId": "A",
+            "measurement": "pagos",
+            "groupBy": [
+              { "type": "time", "params": ["$__interval"] },
+              { "type": "tag", "params": ["estado"] }
+            ],
+            "select": [
+              [
+                { "type": "field", "params": ["value"] },
+                { "type": "sum", "params": [] }
+              ]
+            ],
+            "orderByTime": "ASC"
+          }
+        ]
+      },
+      {
+        "type": "graph",
+        "title": "Transferencias",
+        "id": 2,
+        "datasource": "InfluxDB",
+        "targets": [
+          {
+            "refId": "B",
+            "measurement": "transferenciaCounter",
+            "groupBy": [
+              { "type": "time", "params": ["$__interval"] }
+            ],
+            "select": [
+              [
+                { "type": "field", "params": ["value"] },
+                { "type": "sum", "params": [] }
+              ]
+            ],
+            "orderByTime": "ASC"
+          }
+        ]
+      },
+      {
+        "type": "graph",
+        "title": "Reclamos",
+        "id": 3,
+        "datasource": "InfluxDB",
+        "targets": [
+          {
+            "refId": "C",
+            "measurement": "reclamoCounter",
+            "groupBy": [
+              { "type": "time", "params": ["$__interval"] }
+            ],
+            "select": [
+              [
+                { "type": "field", "params": ["value"] },
+                { "type": "sum", "params": [] }
+              ]
+            ],
+            "orderByTime": "ASC"
+          }
+        ]
+      },
+      {
+        "type": "graph",
+        "title": "Reportes",
+        "id": 4,
+        "datasource": "InfluxDB",
+        "targets": [
+          {
+            "refId": "D",
+            "measurement": "reporteCounter",
+            "groupBy": [
+              { "type": "time", "params": ["$__interval"] }
+            ],
+            "select": [
+              [
+                { "type": "field", "params": ["value"] },
+                { "type": "sum", "params": [] }
+              ]
+            ],
+            "orderByTime": "ASC"
+          }
+        ]
+      }
+    ]
+  }
+  

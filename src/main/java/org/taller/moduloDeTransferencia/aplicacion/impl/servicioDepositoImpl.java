@@ -1,9 +1,4 @@
 package org.taller.moduloDeTransferencia.aplicacion.impl;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -14,10 +9,16 @@ import org.taller.moduloDeTransferencia.dominio.DataFecha;
 import org.taller.moduloDeTransferencia.dominio.Deposito;
 import org.taller.moduloDeTransferencia.dominio.repositorio.cuentaRepo;
 import org.taller.moduloDeTransferencia.dominio.repositorio.depositoRepo;
+import org.taller.moduloDeTransferencia.interfase.evento.out.PublicarEvento;
 import org.taller.moduloDeTransferencia.wscliente.BancoClienteService;
 import org.taller.moduloDeTransferencia.wscliente.BancoClienteService_Service;
 import org.taller.moduloDeTransferencia.wscliente.ConfirmationResponse;
 import org.taller.moduloDeTransferencia.wscliente.NotificationRequest;
+
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 @ApplicationScoped
 public class servicioDepositoImpl implements servicioDeposito {
@@ -32,6 +33,9 @@ public class servicioDepositoImpl implements servicioDeposito {
     
     @PersistenceContext
     private EntityManager em;
+
+    @Inject
+    private PublicarEvento evento;
     
     @Override
     public void realizarDeposito(int idCompra, String rutComercio) {
@@ -66,6 +70,7 @@ public class servicioDepositoImpl implements servicioDeposito {
         cuentaBanco.addDeposito(deposito); // Agregar el depósito a la cuenta
         repo2.Actualizar(cuentaBanco); // Guardar la cuenta actualizada
         notificarAlBanco(idCompra, rutComercio, montoNeto);
+        evento.publicarTransferencia( "Transferencia realizada: \nRut Comercio:" + rutComercio +  "\nMonto Bruto:" + monto + "\nMonto neto depositado" + montoNeto);
     }
 
     public void notificarAlBanco(int idCompra, String rutComercio, float monto) {

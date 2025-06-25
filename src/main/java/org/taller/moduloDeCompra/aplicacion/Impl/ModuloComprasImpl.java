@@ -12,6 +12,7 @@ import org.taller.moduloDeCompra.infraestructura.MedioPagoClient;
 import org.taller.moduloDeCompra.infraestructura.PagoRequest;
 import org.taller.moduloDeCompra.infraestructura.PagoResponse;
 import org.taller.moduloDeCompra.infraestructura.RateLimiter;
+import org.taller.moduloDeCompra.interfase.eventos.out.PublicadorEvento;
 import org.taller.moduloDeCompra.persistencia.ComercioService;
 import org.taller.moduloDeCompra.persistencia.CompraService;
 import org.taller.moduloDeCompra.persistencia.TarjetaService;
@@ -31,8 +32,11 @@ public class ModuloComprasImpl implements ModuloCompras {
     @Inject
     private TarjetaService tarjetaservice;
 
+    @Inject
+    private PublicadorEvento evento;
+
     @Override
-public void procesarPago(DataCompra datosCompra) {
+    public void procesarPago(DataCompra datosCompra) {
     // Verificar el RateLimiter
     if (rateLimiter.isActivo() && !rateLimiter.consumir()) {
         throw new IllegalStateException("Rate limit exceeded. Try again later.");
@@ -96,10 +100,12 @@ public void procesarPago(DataCompra datosCompra) {
 
     private void notificarPagoOk() {
         System.out.println("Evento: notificarPagoOk");
+        evento.publicarPagoOk("PagoOk");
     }
 
     private void notificarPagoError() {
         System.out.println("Evento: notificarPagoError");
+        evento.publicarPagoError("PagoError");
     }
 
     @Override
@@ -109,12 +115,12 @@ public void procesarPago(DataCompra datosCompra) {
         if (compras == null || compras.isEmpty()) {
             throw new IllegalArgumentException("No se encontraron compras para el comercio con RUT: " + idComercio);
         }
+        evento.publicarReporte("Reporte Ventas Diarias");
         // Filtrar las compras del día de hoy y sumar sus importes
         DataFecha hoy = DataFecha.hoy();
         return compras.stream()
         .filter(compra -> compra.getFecha().equals(hoy))
         .collect(Collectors.toList());
-       
     }
 
     @Override
@@ -127,6 +133,7 @@ public void procesarPago(DataCompra datosCompra) {
         if (idComercio == null) {
             throw new IllegalArgumentException("El id del comercio no puede ser nulo.");
         }
+        evento.publicarReporte("Reporte Ventas x Periodo");
         return compraService.listarVentasPorPeriodo(idComercio, fechaIni, fechaEnd);
     }
 
@@ -143,6 +150,7 @@ public void procesarPago(DataCompra datosCompra) {
             .filter(compra -> compra.getFecha().equals(hoy))
             .mapToDouble(DataCompra::getImporte)
             .sum();
+        evento.publicarReporte("Reporte Ventas Totales");
         return (float) total;
     }
 

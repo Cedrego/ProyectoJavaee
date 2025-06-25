@@ -15,8 +15,10 @@ public class BusDeEventos {
     }
 
     public void publicar(Evento evento) {
-        for (ObservadorDeEventos o : observadores) {
-            o.manejar(evento);
+        for (ObservadorDeEventos obs : observadores) {
+            System.out.println("Publicando evento a observador: " + evento.tipo());
+            obs.manejar(evento);
         }
     }
+
 }
