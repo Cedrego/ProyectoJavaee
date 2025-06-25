@@ -28,7 +28,9 @@ public class ModuloComprasImpl implements ModuloCompras {
     
     @Inject
     RateLimiter rateLimiter;
+    @Inject
     private CompraService compraService;
+
     @Inject
     private TarjetaService tarjetaservice;
 
@@ -74,7 +76,7 @@ public class ModuloComprasImpl implements ModuloCompras {
             // Asignar la fecha actual a la compra
             DataFecha fechaHoy = DataFecha.hoy();
             datosCompra.setFecha(fechaHoy);
-
+            System.out.println("✅ Pasa data fecha: ");
             // Persistir la compra
             compraService.guardar(datosCompra);
             System.out.println("✅ Compra guardada exitosamente: " + datosCompra);
