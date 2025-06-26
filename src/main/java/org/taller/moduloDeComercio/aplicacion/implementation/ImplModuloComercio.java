@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.taller.moduloDeComercio.aplicacion.InterfaceModuloComercio;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-
 import org.taller.moduloDeComercio.dominio.Comercio;
 import org.taller.moduloDeComercio.dominio.DatosComercio;
 import org.taller.moduloDeComercio.dominio.POS;
@@ -16,6 +13,9 @@ import org.taller.moduloDeComercio.interfase.eventos.RegistroListener;
 import org.taller.moduloDeComercio.repositorio.RepositorioComercio;
 import org.taller.moduloDeComercio.repositorio.RepositorioPOS;
 import org.taller.moduloDeComercio.repositorio.RepositorioReclamoComercio;
+import org.taller.moduloDeComercio.messaging.ReclamoProducer;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 @ApplicationScoped
 public class ImplModuloComercio implements InterfaceModuloComercio {
@@ -31,6 +31,9 @@ public class ImplModuloComercio implements InterfaceModuloComercio {
 
     @Inject
     RegistroListener dummy;
+
+    @Inject
+    private ReclamoProducer reclamoProducer;
 
 
     private final List<ListenerEventosComercio> listeners = new ArrayList<>();
@@ -133,9 +136,9 @@ public class ImplModuloComercio implements InterfaceModuloComercio {
 
     @Override
     public void realizarReclamo(String idComercio, String textoReclamo) {
-        //podría guardar el reclamo o mostrar un mensaje, por ahora queda en consola
-        ReclamoComercio reclamo = new ReclamoComercio( textoReclamo, idComercio);
+        ReclamoComercio reclamo = new ReclamoComercio(textoReclamo, idComercio);
         repositorioReclamoComercio.guardarR(reclamo);
+        reclamoProducer.enviarReclamo(textoReclamo); // Enviar el reclamo a la queue
         System.out.println("Reclamo recibido del comercio " + idComercio + ": " + textoReclamo);
     }
 
