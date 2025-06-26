@@ -7,14 +7,12 @@ import org.taller.moduloDeComercio.aplicacion.InterfaceModuloComercio;
 import org.taller.moduloDeComercio.dominio.Comercio;
 import org.taller.moduloDeComercio.dominio.DatosComercio;
 import org.taller.moduloDeComercio.dominio.POS;
-import org.taller.moduloDeComercio.dominio.ReclamoComercio;
 import org.taller.moduloDeComercio.interfase.eventos.ListenerEventosComercio;
 import org.taller.moduloDeComercio.interfase.eventos.RegistroListener;
-import org.taller.moduloDeComercio.interfase.eventos.out.PublicadorEvento;
+import org.taller.moduloDeComercio.messaging.ReclamoProducer;
 import org.taller.moduloDeComercio.repositorio.RepositorioComercio;
 import org.taller.moduloDeComercio.repositorio.RepositorioPOS;
-import org.taller.moduloDeComercio.repositorio.RepositorioReclamoComercio;
-
+//import org.taller.moduloDeComercio.repositorio.RepositorioReclamoComercio;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
@@ -25,14 +23,15 @@ public class ImplModuloComercio implements InterfaceModuloComercio {
     @Inject
     private RepositorioComercio repositorioComercio;
 
-    @Inject
-    private RepositorioReclamoComercio repositorioReclamoComercio;
+//    @Inject
+//    private RepositorioReclamoComercio repositorioReclamoComercio;
 
     @Inject
     private RepositorioPOS repositorioPOS;
 
     @Inject
-    private PublicadorEvento evento;
+    private ReclamoProducer reclamoProducer;
+
 
     @Inject
     RegistroListener dummy;
@@ -138,10 +137,10 @@ public class ImplModuloComercio implements InterfaceModuloComercio {
 
     @Override
     public void realizarReclamo(String idComercio, String textoReclamo) {
-        //podría guardar el reclamo o mostrar un mensaje, por ahora queda en consola
-        ReclamoComercio reclamo = new ReclamoComercio( textoReclamo, idComercio);
-        repositorioReclamoComercio.guardarR(reclamo);
-        evento.publicarReclamo("Reclamo recibido del comercio " + idComercio + ": " + textoReclamo);
+        //ReclamoComercio reclamo = new ReclamoComercio(textoReclamo, idComercio);
+        //repositorioReclamoComercio.guardarR(reclamo);
+        // Comenté estas 2 lineas por el cambio a la queue, asi solo guarda cuando vuelven de la queue
+        reclamoProducer.enviarReclamo(idComercio, textoReclamo); // ahora se manda el JSON correcto
         System.out.println("Reclamo recibido del comercio " + idComercio + ": " + textoReclamo);
     }
 

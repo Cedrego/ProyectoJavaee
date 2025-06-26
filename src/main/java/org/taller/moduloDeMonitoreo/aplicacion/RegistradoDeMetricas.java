@@ -54,4 +54,12 @@ public class RegistradoDeMetricas{
         this.meterRegistry.counter("pagos", "estado", "error").increment();
     }
 
+    public void notificarReclamoTotal() {
+        this.meterRegistry.counter(reclamoCounter, "etiqueta", "TOTAL").increment();
+    }
+
+    public void notificarReclamoNegativo() {
+        this.meterRegistry.counter(reclamoCounter, "etiqueta", "NEGATIVO").increment();
+    }
+
 }

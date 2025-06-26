@@ -1,6 +1,9 @@
 package org.taller.moduloDeComercio.dominio;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 @Entity
 public class ReclamoComercio {
     @Id
@@ -8,6 +11,8 @@ public class ReclamoComercio {
     private int idReclamo;
 
     private String descripcionReclamo;
+
+    private String etiquetaString;
 
     private String rutComercio;
 
@@ -18,6 +23,7 @@ public class ReclamoComercio {
         // Constructor para crear un reclamo con descripción y comercio
         this.descripcionReclamo = descripcionReclamo;
         this.rutComercio = rutComercio;
+        this.etiquetaString = "NEUTRO";
     }
     public int getIdReclamo() {
         return idReclamo;
@@ -36,5 +42,11 @@ public class ReclamoComercio {
     }
     public void setRutComercio(String rutComercio) {
         this.rutComercio = rutComercio;
+    }
+    public String getEtiqueta() {
+        return etiquetaString;
+    }
+    public void setEtiqueta(String etiqueta) {
+        this.etiquetaString = etiqueta;
     }
 }
