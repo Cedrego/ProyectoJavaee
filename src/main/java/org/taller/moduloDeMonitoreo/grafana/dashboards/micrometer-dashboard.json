@@ -1,30 +1,29 @@
 {
   "title": "Micrometer - Métricas del sistema",
   "timezone": "browser",
-  "schemaVersion": 30,
+  "schemaVersion": 16,
   "version": 1,
   "refresh": "10s",
   "panels": [
     {
-      "type": "timeseries",
+      "type": "graph",
       "title": "Pagos (OK / Error)",
       "id": 1,
       "datasource": "InfluxDB",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "drawStyle": "bars",
-            "barAlignment": 0.5,
-            "fillOpacity": 80
-          }
-        }
+      "lines": false,
+      "bars": true,
+      "fill": 80,
+      "barWidth": 1,
+      "legend": {
+        "show": true,
+        "alignAsTable": true
       },
       "targets": [
         {
           "refId": "A",
           "measurement": "pagos",
           "groupBy": [
-            { "type": "time", "params": ["$__interval"] },
+            { "type": "time", "params": ["$interval"] },
             { "type": "tag", "params": ["estado"] }
           ],
           "select": [
@@ -36,32 +35,27 @@
           "orderByTime": "ASC",
           "alias": "Pago {{estado}}"
         }
-      ],
-      "legend": {
-        "show": true,
-        "displayMode": "table"
-      }
+      ]
     },
     {
-      "type": "timeseries",
+      "type": "graph",
       "title": "Transferencias",
       "id": 2,
       "datasource": "InfluxDB",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "drawStyle": "bars",
-            "barAlignment": 0.5,
-            "fillOpacity": 80
-          }
-        }
+      "lines": false,
+      "bars": true,
+      "fill": 80,
+      "barWidth": 1,
+      "legend": {
+        "show": true,
+        "alignAsTable": true
       },
       "targets": [
         {
           "refId": "B",
           "measurement": "transferenciaCounter",
           "groupBy": [
-            { "type": "time", "params": ["$__interval"] }
+            { "type": "time", "params": ["$interval"] }
           ],
           "select": [
             [
@@ -71,25 +65,20 @@
           ],
           "orderByTime": "ASC"
         }
-      ],
-      "legend": {
-        "show": true,
-        "displayMode": "table"
-      }
+      ]
     },
     {
-      "type": "timeseries",
+      "type": "graph",
       "title": "Reclamos (Totales y Negativos)",
       "id": 3,
       "datasource": "InfluxDB",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "drawStyle": "bars",
-            "barAlignment": 0.5,
-            "fillOpacity": 80
-          }
-        }
+      "lines": false,
+      "bars": true,
+      "fill": 80,
+      "barWidth": 1,
+      "legend": {
+        "show": true,
+        "alignAsTable": true
       },
       "targets": [
         {
@@ -99,7 +88,7 @@
             { "key": "etiqueta", "operator": "=", "value": "TOTAL" }
           ],
           "groupBy": [
-            { "type": "time", "params": ["$__interval"] }
+            { "type": "time", "params": ["$interval"] }
           ],
           "select": [
             [
@@ -117,7 +106,7 @@
             { "key": "etiqueta", "operator": "=", "value": "NEGATIVO" }
           ],
           "groupBy": [
-            { "type": "time", "params": ["$__interval"] }
+            { "type": "time", "params": ["$interval"] }
           ],
           "select": [
             [
@@ -128,32 +117,27 @@
           "orderByTime": "ASC",
           "alias": "Reclamos Negativos"
         }
-      ],
-      "legend": {
-        "show": true,
-        "displayMode": "table"
-      }
+      ]
     },
     {
-      "type": "timeseries",
+      "type": "graph",
       "title": "Reportes",
       "id": 4,
       "datasource": "InfluxDB",
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "drawStyle": "bars",
-            "barAlignment": 0.5,
-            "fillOpacity": 80
-          }
-        }
+      "lines": false,
+      "bars": true,
+      "fill": 80,
+      "barWidth": 1,
+      "legend": {
+        "show": true,
+        "alignAsTable": true
       },
       "targets": [
         {
           "refId": "D",
           "measurement": "reporteCounter",
           "groupBy": [
-            { "type": "time", "params": ["$__interval"] }
+            { "type": "time", "params": ["$interval"] }
           ],
           "select": [
             [
@@ -163,11 +147,7 @@
           ],
           "orderByTime": "ASC"
         }
-      ],
-      "legend": {
-        "show": true,
-        "displayMode": "table"
-      }
+      ]
     }
   ]
 }

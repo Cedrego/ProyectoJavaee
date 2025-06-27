@@ -44,13 +44,15 @@ public class ReclamoConsumer implements MessageListener {
                     String rutComercio = matcher.group(1);
                     String textoReclamo = matcher.group(2);
 
-                    String etiqueta = obtenerEtiqueta(textoReclamo);
+                    String etiqueta = obtenerEtiqueta(rutComercio,textoReclamo);
 
                     ReclamoComercio reclamo = new ReclamoComercio();
                     reclamo.setDescripcionReclamo(textoReclamo);
                     reclamo.setEtiqueta(etiqueta);
                     reclamo.setRutComercio(rutComercio);
-
+                    if("NEGATIVO".equalsIgnoreCase(etiqueta)) {
+                        evento.publicarReclamoNegativo("Reclamo procesado: " + textoReclamo + " | Etiqueta: " + etiqueta + " | Comercio: " + rutComercio);
+                    }
                     repositorioReclamoComercio.guardarR(reclamo);
                     evento.publicarReclamo("Reclamo procesado: " + textoReclamo + " | Etiqueta: " + etiqueta + " | Comercio: " + rutComercio);
                     System.out.println("Reclamo procesado: " + textoReclamo + " | Etiqueta: " + etiqueta + " | Comercio: " + rutComercio);
@@ -63,15 +65,33 @@ public class ReclamoConsumer implements MessageListener {
         }
     }
 
-    private String obtenerEtiqueta(String textoReclamo) {
+    private String obtenerEtiqueta(String rutComercio, String textoReclamo) {
         try {
             Client client = ClientBuilder.newClient();
+
+            // Armar el objeto JSON manualmente
+            String jsonEntrada = "{"
+                    + "\"rutComercio\":\"" + rutComercio + "\","
+                    + "\"textoReclamo\":\"" + textoReclamo.replace("\"", "\\\"") + "\""
+                    + "}";
+
             Response response = client.target(ETIQUETADO_API_URL)
                     .request(MediaType.APPLICATION_JSON)
-                    .post(Entity.entity(textoReclamo, MediaType.APPLICATION_JSON));
+                    .post(Entity.entity(jsonEntrada, MediaType.APPLICATION_JSON));
 
             if (response.getStatus() == 200) {
-                return response.readEntity(String.class);
+                String jsonRespuesta = response.readEntity(String.class);
+
+                // Usamos regex o una librería para extraer la etiqueta
+                Pattern p = Pattern.compile("\"etiqueta\"\\s*:\\s*\"(.*?)\"");
+                Matcher m = p.matcher(jsonRespuesta);
+
+                if (m.find()) {
+                    return m.group(1);
+                } else {
+                    System.err.println("No se encontró la etiqueta en la respuesta: " + jsonRespuesta);
+                    return "NEUTRO";
+                }
             } else {
                 System.err.println("Error al obtener etiqueta desde EtiquetadoAPI: " + response.getStatus());
                 return "NEUTRO";
