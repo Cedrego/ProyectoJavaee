@@ -15,7 +15,7 @@ import org.taller.moduloDeComercio.repositorio.RepositorioPOS;
 //import org.taller.moduloDeComercio.repositorio.RepositorioReclamoComercio;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-
+import org.mindrot.jbcrypt.BCrypt;
 
 @ApplicationScoped
 public class ImplModuloComercio implements InterfaceModuloComercio {
@@ -49,6 +49,8 @@ public class ImplModuloComercio implements InterfaceModuloComercio {
         if (repositorioComercio.existe(datos.getId())) {
             throw new RuntimeException("Comercio ya existe");
         }
+        //Hash de contraseña
+        String hash = BCrypt.hashpw(datos.getContraseniaHash(), BCrypt.gensalt());
         //crear objeto
         Comercio nuevo = new Comercio(
                 datos.getId(),
@@ -56,7 +58,7 @@ public class ImplModuloComercio implements InterfaceModuloComercio {
                 datos.getDireccion(),
                 datos.getTelefono(),
                 datos.getEmail(),
-                datos.getContraseniaHash()
+                hash
         );
         //luego cambiar a subir a la base de datos con JPA
         System.out.println("Antes de persistir: " + nuevo.getRut());
@@ -111,8 +113,9 @@ public class ImplModuloComercio implements InterfaceModuloComercio {
         if (comercio == null) throw new RuntimeException("Comercio no encontrado");
 
         //buscar el POS en la lista del comercio
-        POS pos = comercio.buscarPOSPorId(idPos);
-        System.out.println("Después de Actualizar Estado POS");
+        POS pos = repositorioPOS.buscarPorIdYComercio(idPos, rutComercio);
+        System.out.println("Despues de encontrar el POS: " + pos);
+        //control de que exista el POS
         if (pos == null) throw new RuntimeException("POS no encontrado");
         //si existe, lo habilito 
         pos.setHabilitadoPOS(habilitado);
@@ -125,8 +128,8 @@ public class ImplModuloComercio implements InterfaceModuloComercio {
     public void cambioContrasenia(String idComercio, String nuevaContrasenia) {
         Comercio comercio = repositorioComercio.obtenerPorRut(idComercio);//Lo edite yo (enzo)
         if (comercio == null) throw new RuntimeException("Comercio no encontrado");
-
-        comercio.setContraComercio(nuevaContrasenia);
+         String hash = BCrypt.hashpw(nuevaContrasenia, BCrypt.gensalt());
+        comercio.setContraComercio(hash);
         repositorioComercio.actualizar(comercio); // Actualizar el comercio en la base de datos
         System.out.println("Después de cambiar contraseña del comercio");
         

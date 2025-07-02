@@ -5,6 +5,8 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+import java.util.List;
+
 import org.taller.moduloDeCompra.aplicacion.Impl.ModuloComprasImpl;
 import org.taller.moduloDeCompra.dominio.DataCompra;
 
@@ -18,9 +20,10 @@ public class ModuloComprasRest {
 
     @GET
     @Path("/resumen-diario")
-    public Response resumenVentasDiarias(@QueryParam("idcomercio") String idComercio) {
+    public Response resumenVentasDiarias(@QueryParam("idcomercio") String idComercio) {//Tener en cuenta que no mostrara nada si no se realizo una compra HOY
         try {
-            return Response.ok(moduloCompras.resumenVentasDiarias(idComercio)).build();
+            List<DataCompra> comprasHoy = moduloCompras.resumenVentasDiarias(idComercio);
+            return Response.ok(comprasHoy).build();
         } catch (IllegalArgumentException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         } catch (NotFoundException e) {
@@ -52,7 +55,7 @@ public class ModuloComprasRest {
 
     @GET
     @Path("/monto-actual-vendido")
-    public Response montoActualVendido(@QueryParam("idcomercio") String idComercio) {
+    public Response montoActualVendido(@QueryParam("idcomercio") String idComercio) {//Tener en cuenta que no mostrara nada si no se realizo una compra HOY    
         try {
             String json = String.valueOf(moduloCompras.montoActualVendido(idComercio));
             return Response.ok(json).build();

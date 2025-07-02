@@ -65,5 +65,12 @@ public class DataCompra {
     public void setTarjeta(DataTarjeta tarjeta) {
         this.tarjeta = tarjeta;
     }
+    public String getRutComercio() {
+        return rutComercio;
+    }
+
+    public void setRutComercio(String rutComercio) {
+        this.rutComercio = rutComercio;
+    }
     
 }
