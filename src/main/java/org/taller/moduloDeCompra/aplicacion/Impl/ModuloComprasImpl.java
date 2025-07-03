@@ -79,9 +79,12 @@ public class ModuloComprasImpl implements ModuloCompras {
             System.out.println("✅ Pasa data fecha: ");
             // Persistir la compra
             compraService.guardar(datosCompra);
-            //Llamar aca a medio
-            //DepositoRequest 
+            System.out.println("ID generado: " + datosCompra.getId()); // ← ya tiene ID
             System.out.println("✅ Compra guardada exitosamente: " + datosCompra);
+            // Notificar al módulo de transferencia
+            medioPagoClient.notificarDeposito(datosCompra.getId(), datosCompra.getRutComercio());
+            System.out.println("✅ Notificación de depósito enviada.");
+            
         } else {
             // Pago rechazado
             System.out.println("❌ Pago rechazado: " + response.codigo);
