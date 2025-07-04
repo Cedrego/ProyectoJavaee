@@ -18,6 +18,7 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.annotation.security.PermitAll;
 
 @ApplicationScoped
 @Path("/comercio")
@@ -31,6 +32,7 @@ public class ComercioAPI {
 
     // curl -X POST http://localhost:8080/ProyectoJavaee/remota/comercio -H "Content-Type: application/json" -d '{"id":"123","nombre":"MiTienda","direccion":"C/Falsa","telefono":"0999","email":"a@b.com","contraseniaHash":"pass", "listaPOS":[]}'
     @POST
+    @PermitAll
     public String altaComercio(ComercioDTO dto) {
         log.infof("Alta comercio: %s", dto);
         DatosComercio datos = dto.toDatosComercio();

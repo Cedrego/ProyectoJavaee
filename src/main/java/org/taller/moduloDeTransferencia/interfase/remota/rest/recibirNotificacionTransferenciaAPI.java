@@ -11,7 +11,7 @@ import java.util.List;
 
 import org.taller.moduloDeTransferencia.aplicacion.servicioDeposito;
 import org.taller.moduloDeTransferencia.dominio.Deposito;
-
+import jakarta.annotation.security.PermitAll;
 
 @ApplicationScoped
 @Path("/transferencia")
@@ -26,6 +26,7 @@ public class recibirNotificacionTransferenciaAPI {
     //-H "Content-Type: application/json" \
     // -d '{"idCompra": 1, "rutComercio": 123}'
     @POST
+    @PermitAll
     @Path("/notificacion")
     public Response recibirNotificacion(NotificacionDepositoDTO dto) {
         SD.realizarDeposito(dto.getIdCompra(), dto.getRutComercio());

@@ -1,33 +1,47 @@
 package org.taller.moduloDeComercio.security;
 
+import java.util.Base64;
+
+import jakarta.annotation.Priority;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.Priorities;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerRequestFilter;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.Provider;
-import java.util.Base64;
+
+import jakarta.ws.rs.container.ResourceInfo;
+import jakarta.ws.rs.core.Context;
+import jakarta.annotation.security.PermitAll; 
 
 @Provider
+@Priority(Priorities.AUTHENTICATION)
 public class AuthenticationFilter implements ContainerRequestFilter {
 
+    @Inject
+    private AuthService authService;
+    @Context
+    private ResourceInfo resourceInfo;
     @Override
-    public void filter(ContainerRequestContext requestContext) {
-        String authHeader = requestContext.getHeaderString("Authorization");
-        if (authHeader == null || !authHeader.startsWith("Basic ")) {
-            requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
+    public void filter(ContainerRequestContext ctx) {
+        if (resourceInfo.getResourceMethod().isAnnotationPresent(PermitAll.class) ||
+            resourceInfo.getResourceClass().isAnnotationPresent(PermitAll.class)) {
             return;
         }
 
-        String base64Credentials = authHeader.substring("Basic ".length());
-        String credentials = new String(Base64.getDecoder().decode(base64Credentials));
-        String[] parts = credentials.split(":", 2);
-
-        if (parts.length != 2 || !authenticate(parts[0], parts[1])) {
-            requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
+        String header = ctx.getHeaderString("Authorization");
+        if (header == null || !header.startsWith("Basic ")) {
+            ctx.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
+            return;
         }
-    }
 
-    private boolean authenticate(String username, String password) {
-        // Implementar lógica para validar usuario y contraseña contra la base de datos
-        return "comercio".equals(username) && "password".equals(password); // Ejemplo
+        var creds = new String(Base64.getDecoder()
+             .decode(header.substring(6)))
+             .split(":", 2);
+        if (creds.length != 2
+            || !authService.authenticate(creds[0], creds[1])) {
+            ctx.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
+            return;
+        }
     }
 }
