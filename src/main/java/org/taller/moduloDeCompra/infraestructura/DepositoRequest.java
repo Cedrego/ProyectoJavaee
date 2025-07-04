@@ -1,4 +1,4 @@
-package org.taller.moduloDeTransferencia.infraestructura;
+package org.taller.moduloDeCompra.infraestructura;
 
 public class DepositoRequest {
     public int idCompra;

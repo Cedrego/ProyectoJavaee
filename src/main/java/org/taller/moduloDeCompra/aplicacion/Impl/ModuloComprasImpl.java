@@ -80,7 +80,7 @@ public class ModuloComprasImpl implements ModuloCompras {
             // Persistir la compra
             compraService.guardar(datosCompra);
             System.out.println("ID generado: " + datosCompra.getId()); // ← ya tiene ID
-            System.out.println("✅ Compra guardada exitosamente: " + datosCompra);
+            
             // Notificar al módulo de transferencia
             medioPagoClient.notificarDeposito(datosCompra.getId(), datosCompra.getRutComercio());
             System.out.println("✅ Notificación de depósito enviada.");
