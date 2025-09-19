@@ -1,55 +1,48 @@
-# ProyectoJavaee-main
+# Módulo de Comercio - Proyecto JavaEE
 
-Este proyecto es una aplicación Java EE modular para la gestión de comercio, compras, monitoreo y transferencias. Está estructurado en varios módulos independientes, cada uno con su propia lógica de negocio, infraestructura y persistencia.
+Este módulo es parte de un sistema distribuido para la gestión de comercios y puntos de venta (POS). Proporciona una API REST para administrar comercios, registrar y gestionar POS, realizar cambios de contraseña y registrar reclamos.
 
-## Estructura del Proyecto
+## Funcionalidades principales
 
-- **moduloDeComercio**: Gestión de comercios, puntos de venta (POS) y reclamos.
-- **moduloDeCompra**: Lógica de compras, pagos y manejo de medios de pago.
-- **moduloDeMonitoreo**: Monitoreo de servicios, incluye integración con Grafana y configuración con Docker Compose.
-- **moduloDeTransferencia**: Gestión de transferencias entre cuentas.
-- **test/**: Pruebas unitarias y de integración.
-- **resources/**: Configuración de persistencia JPA.
-- **webapp/**: Archivos de configuración para despliegue en servidor Java EE.
+- Alta y modificación de comercios
+- Registro y gestión de puntos de venta (POS)
+- Gestión del estado de los POS
+- Cambios de contraseña de usuarios
+- Registro y consulta de reclamos
 
-## Requisitos
+## Estructura
 
-- Java 8 o superior
-- Maven
-- Servidor de aplicaciones Java EE (WildFly, Payara, GlassFish, etc.)
-- Docker (opcional, para monitoreo)
-
-## Compilación y Ejecución
-
-1. **Compilar el proyecto**:
-
-   ```sh
-   mvn clean install
-   ```
-
-2. **Desplegar el archivo WAR** generado en `target/` en tu servidor Java EE.
-
-3. **Monitoreo** (opcional):
-
-   Ve a la carpeta `src/main/java/org/taller/moduloDeMonitoreo` y ejecuta:
-
-   ```sh
-   docker-compose up
-   ```
+- **Dominio**: Clases principales como `Comercio`, `POS`, `ReclamoComercio`, `DatosComercio`
+- **Aplicación**: Lógica de negocio y servicios (`InterfaceModuloComercio`)
+- **Infraestructura**: Persistencia y comunicación con otros módulos
+- **API REST**: Expuesta mediante Jakarta RESTful Web Services
 
 ## Uso
 
-- Accede a los endpoints REST de cada módulo según la configuración de tu servidor.
-- Consulta la documentación interna en los archivos `README-COMERCIO` y otros para detalles específicos de cada módulo.
+1. Despliega el módulo en un servidor Java EE compatible.
+2. Accede a los endpoints REST para gestionar comercios y POS.
+3. Utiliza los DTOs para enviar y recibir datos de forma desacoplada.
 
-## Créditos
+## Requisitos
 
-Proyecto modular Java EE - Taller de Programación.
+- Java 8+
+- Maven
+- Servidor Java EE (WildFly, Payara, GlassFish, etc.)
 
----
+## Ejemplo de ejecución
 
-Si tienes problemas de compilación, verifica la versión de Java y Maven. Para limpiar y recompilar:
+Compila el proyecto desde la raíz:
 
 ```sh
 mvn clean install
 ```
+
+Despliega el archivo WAR generado en tu servidor Java EE.
+
+## Créditos
+
+Desarrollado como parte del Proyecto JavaEE - Taller de Programación.
+
+---
+
+Para más detalles sobre endpoints y ejemplos de uso, consulta la documentación de la API REST en el módulo.
