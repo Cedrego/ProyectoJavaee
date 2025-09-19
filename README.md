@@ -1,74 +1,55 @@
-# Aquí va la documentación del proyecto =)
-modulo de monitoreo pronto solo faltan los tests
-estan pronto los test
-brebe explicacion de como funciona modulo de monitoreo
+# ProyectoJavaee-main
 
-// 1. Crear el bus de eventos
-        BusDeEventos bus = new BusDeEventos();
+Este proyecto es una aplicación Java EE modular para la gestión de comercio, compras, monitoreo y transferencias. Está estructurado en varios módulos independientes, cada uno con su propia lógica de negocio, infraestructura y persistencia.
 
-        // 2. Crear el repositorio (acá usamos uno de consola como ejemplo)
-        RepositorioEventos repositorio = new RepositorioEventos() {
-            @Override
-            public void guardarEvento(String tipo, String mensaje) {
-                System.out.println("📌 Evento registrado -> Tipo: " + tipo + ", Mensaje: " + mensaje);
-            }
-        };
+## Estructura del Proyecto
 
-        // 3. Registrar el observador de monitoreo
-        ObservadorMonitoreo observador = new ObservadorMonitoreo(repositorio);
-        bus.registrar(observador);
+- **moduloDeComercio**: Gestión de comercios, puntos de venta (POS) y reclamos.
+- **moduloDeCompra**: Lógica de compras, pagos y manejo de medios de pago.
+- **moduloDeMonitoreo**: Monitoreo de servicios, incluye integración con Grafana y configuración con Docker Compose.
+- **moduloDeTransferencia**: Gestión de transferencias entre cuentas.
+- **test/**: Pruebas unitarias y de integración.
+- **resources/**: Configuración de persistencia JPA.
+- **webapp/**: Archivos de configuración para despliegue en servidor Java EE.
 
-        // 4. Crear el servicio de monitoreo
-        ServicioMonitoreo servicio = new ServicioMonitoreoImpl(bus);
+## Requisitos
 
-        // 5. Usar el servicio para emitir eventos
-        servicio.notificarPago();
-        servicio.notificarPagoOk();
-        servicio.notificarPagoError();
-        servicio.notificarTransferencia();
-        servicio.notificarReclamoComercio();
+- Java 8 o superior
+- Maven
+- Servidor de aplicaciones Java EE (WildFly, Payara, GlassFish, etc.)
+- Docker (opcional, para monitoreo)
 
-Modulo de Transferencia
-Primero creamos las clases en la carpeta de dominio, las cuales son, comercio, Cuenta Banco Comercio
-Deposito, y yo cree un DataFecha(no es parte del modelo de dominio) cabe reaclcar que ya estube mapeando para
-la base de datos en dichas clases.
+## Compilación y Ejecución
 
-Despues de crear las clases creamos en Repositorio dentro de Dominio las clases encargadas 
-de almacenar los datos de manera local.
+1. **Compilar el proyecto**:
 
-Despues en la carpeta de aplicacion creamos una carpeta servicioDeposito el cual tendra las funciones
- encargadas de crear e insertar un deposito y otra para listar.
+   ```sh
+   mvn clean install
+   ```
 
-Dentro de la carpeta aplicacion estara la carpeta implemntacion la cual contendra la logica 
-de dichas funciones.
+2. **Desplegar el archivo WAR** generado en `target/` en tu servidor Java EE.
 
-Despues en la carpeta interface/remonta/rest tendremos la API rest que atravez del Curl 
-obtendra los datos para ser enviados a la seccion de aplicacion la cual se encargara
-de ejecutar la logica.
+3. **Monitoreo** (opcional):
 
-Detalles del codigo quedaran especificados en comentarios en el mismo.
+   Ve a la carpeta `src/main/java/org/taller/moduloDeMonitoreo` y ejecuta:
 
+   ```sh
+   docker-compose up
+   ```
 
-#NO ESTA EN EL IGNORE
+## Uso
 
+- Accede a los endpoints REST de cada módulo según la configuración de tu servidor.
+- Consulta la documentación interna en los archivos `README-COMERCIO` y otros para detalles específicos de cada módulo.
 
-como se usa el modulo monitoreo
-// 1. Crear el bus de eventos
-        BusDeEventos bus = new BusDeEventos();
+## Créditos
 
-        // 2. Crear el repositorio (acá usamos uno de consola como ejemplo)
-        RepositorioEventos repositorio = new RepositorioEventos() {
-            @Override
-            public void guardarEvento(String tipo, String mensaje) {
-                System.out.println("📌 Evento registrado -> Tipo: " + tipo + ", Mensaje: " + mensaje);
-            }
-        };
+Proyecto modular Java EE - Taller de Programación.
 
-        // 3. Registrar el observador de monitoreo
-        ObservadorMonitoreo observador = new ObservadorMonitoreo(repositorio);
-        bus.registrar(observador);
+---
 
-        // 4. Crear el servicio de monitoreo
-        ServicioMonitoreo servicio = new ServicioMonitoreoImpl(bus);
+Si tienes problemas de compilación, verifica la versión de Java y Maven. Para limpiar y recompilar:
 
-        servicio.notificarReclamoComercio();
+```sh
+mvn clean install
+```
